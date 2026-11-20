@@ -15,11 +15,11 @@ function Meta({ p }: { p: Project }) {
 function Actions({ p }: { p: Project }) {
   return (
     <div className="pactions" data-reveal>
-      <Link className="btn btn--solid" href={`/work/${p.slug}`}>
+      <Link className="btn btn--solid" href={`/work/${p.slug}`} data-magnetic="0.2">
         Explore the project <span aria-hidden>→</span>
       </Link>
       {p.url && (
-        <a className="btn btn--line" href={p.url} target="_blank" rel="noopener noreferrer">
+        <a className="btn btn--line" href={p.url} target="_blank" rel="noopener noreferrer" data-magnetic="0.2">
           {p.urlLabel} <span aria-hidden>↗</span>
         </a>
       )}
@@ -30,7 +30,7 @@ function Actions({ p }: { p: Project }) {
 export function SafarPanel({ p }: { p: Project }) {
   const stops = ["Lalbagh Fort", "Ahsan Manzil", "National Martyrs' Memorial", "Bhawal National Park", "Nine Dome Mosque", "Dogortoli", "Horinpala Eco Park"];
   return (
-    <article className="panel t-safar" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-safar" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="wrap panel__grid">
         <div className="panel__text">
           <Meta p={p} />
@@ -43,7 +43,7 @@ export function SafarPanel({ p }: { p: Project }) {
           <p className="panel__lede" data-reveal>{p.summary}</p>
           <Actions p={p} />
         </div>
-        <div className="safar__stack" aria-hidden>
+        <div className="safar__stack" aria-hidden data-cursor="On the road">
           <figure className="polaroid polaroid--a" data-parallax="0.06">
             <Image src="/work/safar-nama/lalbagh-tomb.jpg" alt="" width={600} height={704} sizes="(max-width: 800px) 50vw, 22vw" />
             <figcaption>Lalbagh Fort · Dhaka</figcaption>
@@ -73,11 +73,11 @@ export function SafarPanel({ p }: { p: Project }) {
 
 export function SakinahPanel({ p }: { p: Project }) {
   return (
-    <article className="panel t-sakinah" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-sakinah" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="sakinah__bgword" aria-hidden>السكينة</div>
       <div className="wrap panel__grid">
         <div className="sakinah__visual">
-          <div className="arch" data-reveal>
+          <div className="arch" data-clip data-cursor="As-Sakinah">
             <Image src="/work/as-sakinah/post-6-dua.jpg" alt="As-Sakinah post: a Quranic supplication in Arabic calligraphy" width={900} height={900} sizes="(max-width: 800px) 80vw, 36vw" />
           </div>
           <Image className="sakinah__mark" src="/work/as-sakinah/arabic.png" alt="As-Sakinah logo" width={150} height={148} data-reveal />
@@ -105,7 +105,7 @@ export function SakinahPanel({ p }: { p: Project }) {
 
 export function HistoryPanel({ p }: { p: Project }) {
   return (
-    <article className="panel t-history" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-history" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="wrap">
         <Meta p={p} />
         <div className="history__head">
@@ -114,7 +114,7 @@ export function HistoryPanel({ p }: { p: Project }) {
           </h3>
           <Image className="history__logo" src="/work/story-behind-history/logo.png" alt="Story Behind History logo" width={260} height={107} data-reveal />
         </div>
-        <figure className="history__banner" data-reveal>
+        <figure className="history__banner" data-clip>
           <Image src="/work/story-behind-history/banner.jpg" alt={p.cover.alt} width={2000} height={761} sizes="100vw" />
         </figure>
         <div className="history__ruler" aria-hidden>
@@ -136,7 +136,7 @@ export function HistoryPanel({ p }: { p: Project }) {
 
 export function MystrickPanel({ p }: { p: Project }) {
   return (
-    <article className="panel t-mystrick" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-mystrick" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="stars" aria-hidden />
       <div className="wrap panel__grid">
         <div className="panel__text">
@@ -160,7 +160,7 @@ export function MystrickPanel({ p }: { p: Project }) {
             <i />
             <i />
           </div>
-          <figure className="screen" data-reveal>
+          <figure className="screen" data-clip data-tilt="6">
             <Image src="/work/mystrick/site.jpg" alt="The Mystrick homepage" width={1440} height={900} sizes="(max-width: 800px) 90vw, 44vw" />
           </figure>
         </div>
@@ -171,14 +171,14 @@ export function MystrickPanel({ p }: { p: Project }) {
 
 export function AttarPanel({ p }: { p: Project }) {
   return (
-    <article className="panel t-attar" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-attar" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="wrap panel__grid">
         <div className="attar__visual">
-          <figure className="attar__main" data-reveal>
-            <Image src="/work/attar-lagbe/agarwood.jpg" alt={p.cover.alt} width={1400} height={1400} sizes="(max-width: 800px) 90vw, 42vw" />
+          <figure className="attar__main" data-clip data-cursor="Attar Lagbe">
+            <Image src="/work/attar-lagbe/banner-vampire-blood.jpg" alt="Attar Lagbe campaign banner: Vampire Blood, a touch of mystery" width={1800} height={1013} sizes="(max-width: 800px) 92vw, 46vw" />
           </figure>
           <figure className="attar__float" data-parallax="-0.08">
-            <Image src="/work/attar-lagbe/signature.jpg" alt="Attar Lagbe Signature attar on silk" width={700} height={700} sizes="(max-width: 800px) 40vw, 16vw" />
+            <Image src="/work/attar-lagbe/p-bakhoor-al-arais.jpg" alt="Attar Lagbe Bakhoor Al Arais, 6 ml bottle" width={900} height={900} sizes="(max-width: 800px) 40vw, 16vw" />
           </figure>
         </div>
         <div className="panel__text">
@@ -205,17 +205,27 @@ export function AttarPanel({ p }: { p: Project }) {
           <Actions p={p} />
         </div>
       </div>
+      <div className="shelf" aria-label="Attar Lagbe products">
+        <div className="shelf__track">
+          {[...(p.products || []), ...(p.products || [])].map((x, i) => (
+            <figure key={i} className="shelf__item" aria-hidden={i >= (p.products?.length || 0)}>
+              <Image src={x.src} alt={`${x.name}, Attar Lagbe 6 ml`} width={360} height={360} sizes="220px" />
+              <figcaption>{x.name}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
     </article>
   );
 }
 
 export function SundusPanel({ p }: { p: Project }) {
   return (
-    <article className="panel t-sundus" id={p.slug} aria-labelledby={`${p.slug}-t`}>
+    <article data-progress className="panel t-sundus" id={p.slug} aria-labelledby={`${p.slug}-t`}>
       <div className="silk" aria-hidden />
       <div className="wrap sundus__inner">
         <Meta p={p} />
-        <p className="sundus__ar" lang="ar" dir="rtl" aria-hidden data-reveal>
+        <p className="sundus__ar shimmer" lang="ar" dir="rtl" aria-hidden data-reveal>
           سندس
         </p>
         <h3 id={`${p.slug}-t`} className="sundus__title" data-reveal>

@@ -16,8 +16,9 @@ export type Project = {
   role: string[];
   logo?: { src: string; w: number; h: number; alt: string; invertOnDark?: boolean };
   cover: { src: string; alt: string };
-  gallery: { src: string; alt: string; tall?: boolean }[];
-  screens?: { desktop: string; mobile: string };
+  gallery: { src: string; alt: string; tall?: boolean; wide?: boolean }[];
+  products?: { src: string; name: string }[];
+  screens?: { desktop: string; mobile?: string; dw?: number; dh?: number };
   links?: { label: string; href: string }[];
   theme: string;
 };
@@ -55,7 +56,7 @@ export const projects: Project[] = [
       { src: "/work/safar-nama/lalbagh-wall.jpg", alt: "Beside the old wall of Lalbagh Fort with a drone case", tall: true },
       { src: "/work/safar-nama/ayub-boat.jpg", alt: "On a boat on the river before sunset", tall: true },
     ],
-    screens: { desktop: "/work/safar-nama/site.jpg", mobile: "/work/safar-nama/mobile.jpg" },
+    screens: { desktop: "/work/safar-nama/site.jpg" },
     links: [
       { label: "YouTube", href: "https://www.youtube.com/@ayub_safar_nama" },
       { label: "Instagram", href: "https://www.instagram.com/mdayub_net/" },
@@ -152,7 +153,7 @@ export const projects: Project[] = [
     logo: { src: "/work/mystrick/icon.svg", w: 40, h: 40, alt: "Mystrick mark: a ring crossed by a horizon line" },
     cover: { src: "/work/mystrick/site.jpg", alt: "The Mystrick homepage: Beyond the known" },
     gallery: [],
-    screens: { desktop: "/work/mystrick/site.jpg", mobile: "/work/mystrick/mobile.jpg" },
+    screens: { desktop: "/work/mystrick/site.jpg" },
     theme: "t-mystrick",
   },
   {
@@ -180,14 +181,26 @@ export const projects: Project[] = [
     ],
     role: ["Founder", "Brand identity and logo", "Product photography and creative content", "Packaging and visual branding", "E-commerce website", "Digital marketing"],
     logo: { src: "/work/attar-lagbe/logo-light.png", w: 900, h: 697, alt: "Attar Lagbe logo in Bengali calligraphy" },
-    cover: { src: "/work/attar-lagbe/agarwood.jpg", alt: "An Attar Lagbe bottle resting on an agarwood branch" },
+    cover: { src: "/work/attar-lagbe/banner-vampire-blood.jpg", alt: "Attar Lagbe campaign banner: Vampire Blood, a touch of mystery" },
     gallery: [
-      { src: "/work/attar-lagbe/signature.jpg", alt: "Attar Lagbe Signature: pure attar oil, alcohol free" },
-      { src: "/work/attar-lagbe/desert.jpg", alt: "An Attar Lagbe bottle in desert sand under a crescent moon" },
-      { src: "/work/attar-lagbe/amber-roller.jpg", alt: "Amber attar in a glass roller bottle" },
-      { src: "/work/attar-lagbe/float.jpg", alt: "A floating amber attar bottle" },
+      { src: "/work/attar-lagbe/banner-dior-sauvage.jpg", alt: "Attar Lagbe campaign banner: Dior Sauvage attar on a chessboard", wide: true },
+      { src: "/work/attar-lagbe/banner-creed-aventus.jpg", alt: "Attar Lagbe campaign banner: Creed Aventus", wide: true },
+      { src: "/work/attar-lagbe/banner-dunhill-desire.jpg", alt: "Attar Lagbe campaign banner: Dunhill Desire on a stage", wide: true },
+      { src: "/work/attar-lagbe/banner-hawas-ice.jpg", alt: "Attar Lagbe campaign banner: Hawas Ice above the clouds", wide: true },
+      { src: "/work/attar-lagbe/banner-gucci-flora.jpg", alt: "Attar Lagbe campaign banner: Gucci Flora held in a red silk glove", wide: true },
     ],
-    screens: { desktop: "/work/attar-lagbe/site.jpg", mobile: "/work/attar-lagbe/mobile.jpg" },
+    products: [
+      { src: "/work/attar-lagbe/p-bakhoor-al-arais.jpg", name: "Bakhoor Al Arais" },
+      { src: "/work/attar-lagbe/p-black-afgano.jpg", name: "Black Afgano" },
+      { src: "/work/attar-lagbe/p-creed-aventus.jpg", name: "Creed Aventus" },
+      { src: "/work/attar-lagbe/p-dunhill-desire.jpg", name: "Dunhill Desire" },
+      { src: "/work/attar-lagbe/p-gucci-flora.jpg", name: "Gucci Flora" },
+      { src: "/work/attar-lagbe/p-hawas-ice.jpg", name: "Hawas Ice" },
+      { src: "/work/attar-lagbe/p-lattafa-khamrah.jpg", name: "Khamrah" },
+      { src: "/work/attar-lagbe/p-shahi-oud.jpg", name: "Shahi Oud" },
+      { src: "/work/attar-lagbe/p-vampire-blood.jpg", name: "Vampire Blood" },
+    ],
+    screens: { desktop: "/work/attar-lagbe/site.jpg", dw: 946, dh: 591 },
     theme: "t-attar",
   },
   {

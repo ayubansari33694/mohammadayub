@@ -4,6 +4,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects, getProject } from "@/lib/projects";
 import { site } from "@/lib/site";
+import Split from "@/components/Split";
+
+function Fact({ v }: { v: string }) {
+  const m = v.match(/^(\d+)(\+?)$/);
+  if (!m) return <>{v}</>;
+  return (
+    <span data-count={m[1]} data-suffix={m[2]}>
+      {v}
+    </span>
+  );
+}
 
 export const dynamicParams = false;
 
@@ -73,7 +84,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           </div>
           <div className="case__titlebar">
             <div>
-              <h1 className="case__title">{p.name}</h1>
+              <h1 className="case__title">
+                <Split text={p.name} mode="chars" step={40} delay={250} />
+              </h1>
               {p.native && (
                 <p className="case__native" lang={p.slug === "sundus" ? "ar" : undefined}>
                   {p.native}
@@ -101,12 +114,12 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           <p className="case__tagline">{p.tagline}</p>
           <div className="pactions">
             {p.url && (
-              <a className="btn btn--solid" href={p.url} target="_blank" rel="noopener noreferrer">
+              <a className="btn btn--solid" href={p.url} target="_blank" rel="noopener noreferrer" data-magnetic="0.2">
                 Visit {p.urlLabel} <span aria-hidden>↗</span>
               </a>
             )}
             {p.links?.map((l) => (
-              <a key={l.href} className="btn btn--line" href={l.href} target="_blank" rel="noopener noreferrer">
+              <a key={l.href} className="btn btn--line" href={l.href} target="_blank" rel="noopener noreferrer" data-magnetic="0.2">
                 {l.label} <span aria-hidden>↗</span>
               </a>
             ))}
@@ -115,7 +128,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       </header>
 
       {p.cover.src && p.slug !== "mystrick" && (
-        <figure className="case__cover wrap" data-reveal>
+        <figure className="case__cover wrap" data-clip>
           <Image src={p.cover.src} alt={p.cover.alt} width={2000} height={1200} sizes="(max-width: 1400px) 100vw, 1400px" priority />
         </figure>
       )}
@@ -137,7 +150,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             {p.facts.map((f) => (
               <div key={f.k} data-reveal>
                 <dt>{f.k}</dt>
-                <dd>{f.v}</dd>
+                <dd>
+                  <Fact v={f.v} />
+                </dd>
               </div>
             ))}
           </dl>
@@ -156,18 +171,20 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
         <section className="case__screens wrap" aria-label="Website previews">
           <p className="label">The website</p>
           <div className="devices">
-            <figure className="browser" data-reveal>
+            <figure className={`browser${p.screens.mobile ? "" : " browser--solo"}`} data-clip data-tilt="4">
               <div className="browser__bar" aria-hidden>
                 <i />
                 <i />
                 <i />
                 <span>{p.urlLabel}</span>
               </div>
-              <Image src={p.screens.desktop} alt={`${p.name} website on desktop`} width={1440} height={900} sizes="(max-width: 900px) 100vw, 70vw" />
+              <Image src={p.screens.desktop} alt={`${p.name} website on desktop`} width={p.screens.dw || 1440} height={p.screens.dh || 900} sizes="(max-width: 900px) 100vw, 70vw" />
             </figure>
-            <figure className="phone" data-reveal data-parallax="-0.05">
-              <Image src={p.screens.mobile} alt={`${p.name} website on a phone`} width={390} height={844} sizes="(max-width: 900px) 45vw, 20vw" />
-            </figure>
+            {p.screens.mobile && (
+              <figure className="phone" data-reveal data-parallax="-0.05">
+                <Image src={p.screens.mobile} alt={`${p.name} website on a phone`} width={390} height={844} sizes="(max-width: 900px) 45vw, 20vw" />
+              </figure>
+            )}
           </div>
           <p className="case__caption">Screenshots of the live site, captured November 2026.</p>
         </section>
@@ -176,10 +193,24 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       {p.gallery.length > 0 && (
         <section className="case__gallery wrap" aria-label="Gallery">
           <p className="label">{p.slug === "attar-lagbe" ? "Product & brand imagery" : p.slug === "as-sakinah" ? "Knowledge posts" : "From the road"}</p>
-          <div className={`gallery gallery--${p.gallery.length}`}>
+          <div className={`gallery gallery--${p.gallery.length}${p.gallery[0]?.wide ? " gallery--wide" : ""}`}>
             {p.gallery.map((g, k) => (
-              <figure key={g.src} data-reveal style={{ ["--d" as string]: `${k * 70}ms` }}>
-                <Image src={g.src} alt={g.alt} width={900} height={g.tall ? 1200 : 900} sizes="(max-width: 800px) 50vw, 25vw" />
+              <figure key={g.src} data-clip data-cursor="View" style={{ ["--d" as string]: `${k * 90}ms` }}>
+                <Image src={g.src} alt={g.alt} width={g.wide ? 1800 : 900} height={g.wide ? 1013 : g.tall ? 1200 : 900} sizes={g.wide ? "(max-width: 800px) 100vw, 50vw" : "(max-width: 800px) 50vw, 25vw"} />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {p.products && (
+        <section className="case__gallery wrap" aria-label="Product range">
+          <p className="label">The collection · 6 ml</p>
+          <div className="products">
+            {p.products.map((x, k) => (
+              <figure key={x.src} data-reveal data-tilt="8" style={{ ["--d" as string]: `${k * 60}ms` }}>
+                <Image src={x.src} alt={`${x.name}, Attar Lagbe 6 ml bottle`} width={900} height={900} sizes="(max-width: 800px) 50vw, 30vw" />
+                <figcaption className="sr-only">{x.name}</figcaption>
               </figure>
             ))}
           </div>
@@ -196,7 +227,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       )}
 
       <nav className="case__next" aria-label="Next project">
-        <Link href={`/work/${next.slug}`} className="wrap">
+        <Link href={`/work/${next.slug}`} className="wrap" data-cursor="Next">
           <span className="label">Next project · {next.no}</span>
           <span className="case__nextname">
             {next.name} <span aria-hidden>→</span>

@@ -6,6 +6,16 @@ import { panelFor } from "@/components/Panels";
 import Loader from "@/components/Loader";
 import RoleCycler from "@/components/RoleCycler";
 import ContactForm from "@/components/ContactForm";
+import Split from "@/components/Split";
+
+const thumbs: Record<string, string> = {
+  "safar-nama": "/work/safar-nama/ayub-forest.jpg",
+  "as-sakinah": "/work/as-sakinah/post-6-dua.jpg",
+  "story-behind-history": "/work/story-behind-history/banner.jpg",
+  mystrick: "/work/mystrick/site.jpg",
+  "attar-lagbe": "/work/attar-lagbe/banner-vampire-blood.jpg",
+  sundus: "/brand/sundus-card.svg",
+};
 
 const education = [
   {
@@ -95,6 +105,11 @@ export default function Home() {
 
       {/* ─────────────── HERO ─────────────── */}
       <section className="hero" aria-labelledby="hero-name">
+        <div className="hero__aurora" aria-hidden>
+          <i />
+          <i />
+          <i />
+        </div>
         <div className="hero__grid wrap">
           <div className="hero__copy">
             <p className="label hero__kicker">
@@ -102,11 +117,14 @@ export default function Home() {
               <span>Bangladesh</span>
             </p>
             <h1 id="hero-name" className="hero__name">
-              <span className="line">
-                <span>Mohammad</span>
+              <span className="hero__line">
+                <Split text="Mohammad" mode="chars" delay={150} />
               </span>
-              <span className="line">
-                <em>Ayub</em>
+              <span className="hero__line hero__line--2">
+                <Split text="Ayub" mode="words" delay={520} className="gold" />
+                <span className="hero__ar" lang="ar" aria-hidden>
+                  محمد أيوب
+                </span>
               </span>
             </h1>
             <p className="hero__roles">
@@ -116,17 +134,18 @@ export default function Home() {
               I study the Hadith and the Islamic sciences, and I build things: brands, digital platforms, films and ventures. This is where all of them meet.
             </p>
             <div className="hero__cta">
-              <Link href="/#work" className="btn btn--solid">
+              <Link href="/#work" className="btn btn--solid" data-magnetic="0.25">
                 Explore my work <span aria-hidden>↓</span>
               </Link>
-              <Link href="/#contact" className="btn btn--line">
+              <Link href="/#contact" className="btn btn--line" data-magnetic="0.25">
                 Get in touch
               </Link>
             </div>
           </div>
 
           <div className="hero__portrait">
-            <div className="hero__arch" data-parallax="0.05">
+            <div className="hero__arch" data-tilt="10">
+              <span className="hero__sheen" aria-hidden />
               <Image
                 src="/brand/ayub-portrait.jpg"
                 alt="Portrait of Mohammad Ayub"
@@ -151,6 +170,9 @@ export default function Home() {
           </div>
         </div>
         <div className="hero__index wrap" aria-hidden>
+          <span className="hero__scroll">
+            <i /> Scroll
+          </span>
           {projects.map((p) => (
             <span key={p.slug}>
               <i>{p.no}</i> {p.name}
@@ -174,8 +196,8 @@ export default function Home() {
       <section className="section about" id="about" aria-labelledby="about-t">
         <div className="wrap">
           <p className="label" data-reveal>01 — About</p>
-          <h2 id="about-t" className="about__statement" data-reveal>
-            A student by calling, a maker by habit. I believe <em>knowledge, creativity, technology</em> and <em>enterprise</em> belong in the same hands.
+          <h2 id="about-t" className="about__statement">
+            <Split mode="scrub" text="A student by calling, a maker by habit. I believe knowledge, creativity, technology and enterprise belong in the same hands." />
           </h2>
           <div className="about__cols">
             <div className="about__text" data-reveal>
@@ -222,8 +244,8 @@ export default function Home() {
       <section className="work" id="work" aria-labelledby="work-t">
         <div className="wrap work__intro">
           <p className="label" data-reveal>02 — Projects & ventures</p>
-          <h2 id="work-t" className="work__title" data-reveal>
-            Six worlds. <em>One maker.</em>
+          <h2 id="work-t" className="work__title">
+            <Split text="Six worlds." mode="chars" step={35} /> <em><Split text="One maker." mode="chars" delay={380} step={35} /></em>
           </h2>
           <p className="work__lede" data-reveal>
             Every project has its own name, its own audience and its own visual language. Together they map what I care about: travel, faith, history, science, enterprise and
@@ -232,7 +254,7 @@ export default function Home() {
           <ol className="work__index">
             {projects.map((p) => (
               <li key={p.slug} data-reveal>
-                <a href={`#${p.slug}`}>
+                <a href={`#${p.slug}`} data-preview={thumbs[p.slug]} data-cursor="View">
                   <span className="work__no">{p.no}</span>
                   <span className="work__name">{p.name}</span>
                   <span className="work__native" lang={p.slug === "sundus" ? "ar" : "bn"}>
@@ -259,10 +281,11 @@ export default function Home() {
             One brand on the market. <em>One in the making.</em>
           </h2>
           <div className="ventures__grid">
-            <article className="venture venture--live" data-reveal>
+            <article className="venture venture--live" data-reveal data-tilt="5">
               <header>
                 <span className="chip chip--live">Live business</span>
                 <Image src="/work/attar-lagbe/logo.png" alt="Attar Lagbe logo" width={150} height={116} />
+                <span className="venture__shine" aria-hidden />
               </header>
               <h3>Attar Lagbe</h3>
               <p>A fragrance brand that sells authentic, alcohol-free attar and perfume oils across Bangladesh, online, with cash on delivery.</p>
@@ -281,7 +304,7 @@ export default function Home() {
                 </a>
               </div>
             </article>
-            <article className="venture venture--soon" data-reveal style={{ ["--d" as string]: "120ms" }}>
+            <article className="venture venture--soon" data-reveal data-tilt="5" style={{ ["--d" as string]: "120ms" }}>
               <header>
                 <span className="chip chip--soon">In preparation</span>
                 <span className="venture__ar" lang="ar">
@@ -318,7 +341,7 @@ export default function Home() {
               A madrasa education that began in Saudi Arabia and continues today in the study of the Hadith.
             </p>
           </div>
-          <ol className="timeline">
+          <ol className="timeline" data-progress="long">
             {education.map((e, i) => (
               <li key={e.school} className={e.current ? "is-current" : ""} data-reveal style={{ ["--d" as string]: `${i * 90}ms` }}>
                 <span className="timeline__when">{e.when}</span>
@@ -391,7 +414,7 @@ export default function Home() {
           </h2>
           <div className="research__grid">
             {interests.map((it, i) => (
-              <article key={it.k} className="interest" data-reveal style={{ ["--d" as string]: `${i * 80}ms` }}>
+              <article key={it.k} className="interest" data-tilt="6" data-reveal style={{ ["--d" as string]: `${i * 80}ms` }}>
                 <span className="interest__n">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{it.k}</h3>
                 <p>{it.v}</p>
@@ -407,8 +430,8 @@ export default function Home() {
         <div className="wrap contact__grid">
           <div>
             <p className="label" data-reveal>07 — Contact</p>
-            <h2 id="contact-t" className="contact__title" data-reveal>
-              Let&rsquo;s build something <em>meaningful.</em>
+            <h2 id="contact-t" className="contact__title">
+              <Split text="Let’s build something" mode="words" /> <em><Split text="meaningful." mode="words" delay={300} /></em>
             </h2>
             <p className="contact__lede" data-reveal>
               For collaborations, projects, questions about my ventures, or simply to say salam, write to me. I read every message.

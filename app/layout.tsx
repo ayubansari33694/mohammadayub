@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter_Tight, JetBrains_Mono, Amiri, Hind_Siliguri } from "next/font/google";
+import { Bodoni_Moda, Manrope, JetBrains_Mono, Amiri, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { projects } from "@/lib/projects";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Motion from "@/components/Motion";
+import Experience from "@/components/Experience";
 
-const display = Fraunces({ subsets: ["latin"], variable: "--f-display", axes: ["opsz", "SOFT"], display: "swap" });
-const sans = Inter_Tight({ subsets: ["latin"], variable: "--f-sans", display: "swap" });
+const display = Bodoni_Moda({ subsets: ["latin"], variable: "--f-display", style: ["normal", "italic"], axes: ["opsz"], display: "swap" });
+const sans = Manrope({ subsets: ["latin"], variable: "--f-sans", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--f-mono", weight: ["400", "500"], display: "swap" });
 const arabic = Amiri({ subsets: ["arabic"], variable: "--f-arabic", weight: ["400", "700"], display: "swap" });
 const bangla = Hind_Siliguri({ subsets: ["bengali"], variable: "--f-bangla", weight: ["400", "600"], display: "swap" });
@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main id="main">{children}</main>
         <Footer />
-        <Motion />
+        <Experience />
       </body>
     </html>
   );
