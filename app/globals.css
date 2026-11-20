@@ -494,10 +494,9 @@ em {
   }
 }
 
-/* ---------- project logos: one calm row, evenly spaced (no band, no names) ---------- */
+/* ---------- project logos: plain ash watermarks moving right to left (no colour, no glint, no reveal; AYUB, 2026-11-20) ---------- */
 .logos {
   --ash: rgba(18, 24, 21, 0.24);
-  --glint: linear-gradient(100deg, var(--ash) 0%, var(--ash) 40%, rgba(4, 122, 110, 0.9) 47%, rgba(184, 135, 47, 0.95) 53%, var(--ash) 60%, var(--ash) 100%);
   overflow: hidden;
   padding: clamp(30px, 4vw, 56px) 0;
   /* soft fade at both ends */
@@ -507,7 +506,7 @@ em {
 .logos__track {
   display: flex;
   width: max-content;
-  animation: marquee 42s linear infinite;
+  animation: marquee 24s linear infinite;
 }
 /* pointer on the strip: it stops; pointer away: it moves again */
 .logos:hover .logos__track,
@@ -524,18 +523,12 @@ em {
   display: grid;
   place-items: center;
   padding: 10px;
-  border-radius: 14px;
-  transition: transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
 }
-/* logo shape painted ash, with a teal-and-gold glint passing through it */
 .logos__mark {
   display: block;
   height: calc(clamp(50px, 4.6vw, 78px) * var(--sc, 1));
   aspect-ratio: var(--ar, 1);
-  background: var(--glint);
-  background-size: 400% 100%;
-  animation: glint 8s linear infinite;
-  animation-delay: calc(var(--i, 0) * -1.3s);
+  background: var(--ash);
   -webkit-mask: var(--logo) center / contain no-repeat;
   mask: var(--logo) center / contain no-repeat;
 }
@@ -550,28 +543,8 @@ em {
   margin-block: -0.35em;
   -webkit-mask: none;
   mask: none;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-@keyframes glint {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-/* hover / focus: the mark lights up in the logo colours with a soft glow */
-.logos__item:hover,
-.logos__item:focus-visible {
-  transform: scale(1.08);
-  filter: drop-shadow(0 0 16px rgba(4, 122, 110, 0.35)) drop-shadow(0 0 10px rgba(233, 199, 123, 0.55));
-}
-.logos__item:hover .logos__mark,
-.logos__item:focus-visible .logos__mark {
-  background: var(--duo-grad);
-  background-size: 300% 100%;
+  background: none;
+  color: var(--ash);
 }
 @media (max-width: 860px) {
   .logos__mark {
@@ -2326,8 +2299,7 @@ html:not(.js) .lang__bar {
   }
   .marquee__track,
   .safar__track,
-  .logos__track,
-  .logos__mark {
+  .logos__track {
     animation: none;
   }
 }
