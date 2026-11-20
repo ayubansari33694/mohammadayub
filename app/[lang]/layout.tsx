@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Space_Grotesk, Inter, Hind_Siliguri, Cairo, Amiri } from "next/font/google";
+import { Space_Grotesk, Inter, Hind_Siliguri, Cairo, Amiri, Aref_Ruqaa } from "next/font/google";
 import "../globals.css";
 import { site } from "@/lib/site";
 import { projects } from "@/lib/projects";
@@ -15,6 +15,8 @@ const sans = Inter({ subsets: ["latin"], variable: "--f-sans", display: "swap" }
 const bangla = Hind_Siliguri({ subsets: ["bengali", "latin"], variable: "--f-bangla", weight: ["400", "500", "600", "700"], display: "swap" });
 const arabic = Cairo({ subsets: ["arabic", "latin"], variable: "--f-arabic", weight: ["400", "500", "600", "700"], display: "swap" });
 const calli = Amiri({ subsets: ["arabic"], variable: "--f-calli", weight: ["400", "700"], display: "swap" });
+// Ruqaa calligraphy, only for the footer motto
+const ruqaa = Aref_Ruqaa({ subsets: ["arabic"], variable: "--f-ruqaa", weight: ["400", "700"], display: "swap", preload: false });
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -113,7 +115,7 @@ export default async function RootLayout({ children, params }: { children: React
       lang={lang}
       dir={dir(lang)}
       data-lang={lang}
-      className={`${display.variable} ${sans.variable} ${bangla.variable} ${arabic.variable} ${calli.variable}`}
+      className={`${display.variable} ${sans.variable} ${bangla.variable} ${arabic.variable} ${calli.variable} ${ruqaa.variable}`}
     >
       <body>
         <a className="skip" href="#main">

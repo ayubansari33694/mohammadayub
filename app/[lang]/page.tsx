@@ -18,6 +18,15 @@ const thumbs: Record<string, string> = {
   sundus: "/brand/sundus-card.svg",
 };
 
+/** Logos for the watermark ribbon, used as masks (shape only, painted ash). Sundus has no logo yet, so its Arabic name stands in. */
+const ribbonLogos: Record<string, { src: string; ratio: string }> = {
+  "safar-nama": { src: "/work/safar-nama/logo-dark.png", ratio: "600 / 593" },
+  "as-sakinah": { src: "/work/as-sakinah/arabic.png", ratio: "500 / 492" },
+  "story-behind-history": { src: "/work/story-behind-history/logo.png", ratio: "900 / 370" },
+  mystrick: { src: "/brand/ribbon/mystrick.svg", ratio: "1 / 1" },
+  "attar-lagbe": { src: "/work/attar-lagbe/logo-light.png", ratio: "700 / 542" },
+};
+
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: raw } = await params;
   const lang = (isLang(raw) ? raw : "en") as Lang;
@@ -49,9 +58,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </span>
               <span className="hero__line hero__line--2">
                 <Split text={d.name.last} mode="words" delay={520} className="gold" />
-                <span className="hero__ar" lang={lang === "en" ? "ar" : "en"} aria-hidden>
-                  {d.hero.secondary}
-                </span>
+                {d.hero.secondary && (
+                  <span className="hero__ar" lang="en" aria-hidden>
+                    {d.hero.secondary}
+                  </span>
+                )}
               </span>
             </h1>
             <p className="hero__roles">
@@ -112,6 +123,38 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           ))}
         </div>
       </div>
+
+      {/* project logos as a watermark ribbon, right to left */}
+      <nav className="ribbon" aria-label={d.nav.projects} data-reveal>
+        <div className="ribbon__track" dir="ltr">
+          {[0, 1].map((k) => (
+            <div key={k} className="ribbon__set" aria-hidden={k === 1 || undefined}>
+              {projects.map((p, i) => (
+                <Link
+                  key={p.slug}
+                  href={L(`/work/${p.slug}`)}
+                  className="ribbon__item"
+                  tabIndex={k === 1 ? -1 : undefined}
+                  style={{ ["--i" as string]: i }}
+                >
+                  {ribbonLogos[p.slug] ? (
+                    <span
+                      className="ribbon__logo"
+                      style={{ ["--logo" as string]: `url(${ribbonLogos[p.slug].src})`, ["--ar" as string]: ribbonLogos[p.slug].ratio }}
+                      aria-hidden
+                    />
+                  ) : (
+                    <span className="ribbon__logo ribbon__logo--text" lang="ar" aria-hidden>
+                      سندس
+                    </span>
+                  )}
+                  <span className="ribbon__name">{p.name}</span>
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      </nav>
 
       {/* ─────────────── ABOUT ─────────────── */}
       <section className="section about" id="about" aria-labelledby="about-t">

@@ -100,7 +100,8 @@ const en: Dict = {
     scroll: "Scroll",
     seal: "KNOWLEDGE · CREATIVITY · TECHNOLOGY · ENTERPRISE · ",
     portraitAlt: "Portrait of Mohammad Ayub",
-    secondary: "محمد أيوب",
+    // the English page shows only the English name (AYUB, 2026-11-20); Bengali and Arabic pages add the English name
+    secondary: "",
   },
   marquee: ["Knowledge", "Design", "Enterprise", "Technology", "Storytelling", "Research", "العلم"],
   about: {

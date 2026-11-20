@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { site } from "@/lib/site";
 import { projectsFor } from "@/lib/projects-i18n";
 import { href, type Dict, type Lang } from "@/lib/i18n";
@@ -35,7 +34,8 @@ export default function Footer({ lang, d }: { lang: Lang; d: Dict }) {
 
       <div className="wrap footer__grid">
         <div className="footer__brand">
-          <Image src="/brand/ayub-mark.png" alt="Mohammad Ayub logo" width={64} height={47} />
+          {/* the mark drawn in the cream theme colour on the dark footer */}
+          <span className="footer__mark" role="img" aria-label="Mohammad Ayub logo" />
           <p>{f.line}</p>
         </div>
         <div>
@@ -82,11 +82,14 @@ export default function Footer({ lang, d }: { lang: Lang; d: Dict }) {
         <span>{d.name.last}</span>
       </div>
 
+      <p className="footer__motto" dir="ltr" data-reveal>
+        <span lang="ar" dir="rtl">وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ</span>
+      </p>
+
       <div className="wrap footer__base">
         <span>
           © {new Date().getFullYear()} {d.name.full}. {f.rights}
         </span>
-        <span lang="ar">وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ</span>
         <a href="#main" className="footer__top-link" data-magnetic="0.3">
           {f.top} <span aria-hidden>↑</span>
         </a>
