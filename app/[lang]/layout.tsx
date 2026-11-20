@@ -112,11 +112,20 @@ export default async function RootLayout({ children, params }: { children: React
 
   return (
     <html
+      suppressHydrationWarning
       lang={lang}
       dir={dir(lang)}
       data-lang={lang}
       className={`${display.variable} ${sans.variable} ${bangla.variable} ${arabic.variable} ${calli.variable} ${ruqaa.variable}`}
     >
+      <head>
+        {/* theme before first paint: saved choice, else the device setting */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <a className="skip" href="#main">
           {lang === "bn" ? "মূল অংশে যান" : lang === "ar" ? "انتقل إلى المحتوى" : "Skip to content"}

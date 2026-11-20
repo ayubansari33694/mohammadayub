@@ -16,6 +16,9 @@
   --teal-deep: #035c53;
   --gold: #b8872f;
   --gold-soft: #d9b26a;
+  /* fixed colours that do not change with the theme (text and fills on dark sections) */
+  --cream: #f3eee4;
+  --night: #0f1513;
 
   --f-d: var(--f-display), "Iowan Old Style", Georgia, serif;
   --f-s: var(--f-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -462,7 +465,7 @@ em {
 /* ---------- marquee ---------- */
 .marquee {
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
   overflow: hidden;
   padding: 22px 0;
   font-family: var(--f-d);
@@ -587,7 +590,7 @@ em {
 }
 .about__aim {
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
   padding: clamp(28px, 4vw, 48px);
   border-radius: 999px 999px 6px 6px;
   padding-top: clamp(80px, 9vw, 120px);
@@ -1549,7 +1552,7 @@ em {
 }
 .is-current .timeline__body {
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
   padding: 26px 28px;
   border-radius: 6px;
   margin-top: -10px;
@@ -1750,7 +1753,7 @@ html:not(.js) .lang__bar {
    ========================================================================== */
 .research {
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
 }
 .research .label {
   color: var(--gold-soft);
@@ -2661,7 +2664,7 @@ a:hover .roll::after {
 .is-open .nav__bar {
   background: rgba(15, 21, 19, 0.6);
   border-color: rgba(233, 199, 123, 0.25);
-  color: var(--paper);
+  color: var(--cream);
 }
 .nav__brand {
   display: flex;
@@ -2783,7 +2786,7 @@ a:hover .roll::after {
 }
 .is-open .nav__cta {
   background: var(--gold);
-  color: var(--ink);
+  color: var(--night);
 }
 .is-open .nav__mark {
   background: transparent;
@@ -2796,7 +2799,7 @@ a:hover .roll::after {
   transition: background 0.45s, border-color 0.45s, box-shadow 0.45s, color 0.45s, backdrop-filter 0.45s;
 }
 .nav-dark .nav:not(.is-open) .nav__bar {
-  color: var(--paper);
+  color: var(--cream);
 }
 .nav-dark.scrolled .nav:not(.is-open) .nav__bar {
   background: rgba(15, 21, 19, 0.82);
@@ -2807,8 +2810,8 @@ a:hover .roll::after {
   color: rgba(243, 238, 228, 0.66);
 }
 .nav-dark .nav:not(.is-open) .nav__cta {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--cream);
+  color: var(--night);
 }
 .nav-dark .nav:not(.is-open) .nav__toggle,
 .nav-dark .nav:not(.is-open) .langsw {
@@ -2839,7 +2842,7 @@ a:hover .roll::after {
   z-index: -1;
   pointer-events: none;
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
   overflow-x: hidden; /* the big decorative name must not make the menu scroll sideways on phones */
   clip-path: circle(0% at calc(100% - 46px) 46px);
   transition: clip-path 0.9s var(--ease-out);
@@ -2984,7 +2987,7 @@ a:hover .roll::after {
 }
 .install__btn:hover {
   background: var(--gold);
-  color: var(--ink);
+  color: var(--night);
 }
 .install__hint {
   font-size: 0.82rem;
@@ -3013,7 +3016,7 @@ a:hover .roll::after {
   position: fixed;
   inset: 0;
   z-index: 400;
-  color: var(--paper);
+  color: var(--cream);
 }
 .loader__panel {
   position: absolute;
@@ -3493,7 +3496,7 @@ html:not(.js) .hero__ar {
   position: relative;
   overflow: hidden;
   background: var(--ink-2);
-  color: var(--paper);
+  color: var(--cream);
   padding-top: clamp(90px, 12vw, 170px);
 }
 .footer__glow {
@@ -3540,7 +3543,7 @@ html:not(.js) .hero__ar {
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--gold);
-  color: var(--ink);
+  color: var(--night);
   display: grid;
   place-content: center;
   justify-items: center;
@@ -3558,7 +3561,7 @@ html:not(.js) .hero__ar {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--paper);
+  background: var(--cream);
   border-radius: 50%;
   transform: scale(0);
   transition: transform 0.7s var(--ease-out);
@@ -3649,7 +3652,7 @@ html:not(.js) .hero__ar {
   display: block;
   width: 64px;
   aspect-ratio: 900 / 661;
-  background: var(--paper);
+  background: var(--cream);
   -webkit-mask: url("/brand/ayub-mark.png") center / contain no-repeat;
   mask: url("/brand/ayub-mark.png") center / contain no-repeat;
 }
@@ -3697,7 +3700,7 @@ html:not(.js) .hero__ar {
   padding: 10px 18px;
   border: 1px solid rgba(243, 238, 228, 0.25);
   border-radius: 999px;
-  color: var(--paper);
+  color: var(--cream);
 }
 .footer__top-link:hover {
   border-color: var(--gold);
@@ -4221,4 +4224,147 @@ html.nav-dark .nav:not(.is-open) .nav__bar {
 }
 .curtain__panel--gold {
   background: var(--duo-grad);
+}
+
+/* ==========================================================================
+   DARK THEME (html[data-theme="dark"]) — AYUB, 2026-11-20
+   Same layout, night surfaces, cream text; the mark's teal is lifted so it reads on dark.
+   ========================================================================== */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #111815;
+  --paper-2: #161f1b;
+  --paper-3: #1d2723;
+  --ink: #ece6da;
+  --ink-2: #0a0e0c;
+  --ink-soft: #c9c3b6;
+  --muted: #959d97;
+  --line: rgba(236, 230, 218, 0.13);
+  --teal: #2fa596;
+  --teal-deep: #5cc2b3;
+}
+html[data-theme="dark"] body::before {
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+/* soft colour glows of the hero, dimmed for night */
+html[data-theme="dark"] .hero__aurora {
+  opacity: 0.32;
+}
+html[data-theme="dark"] .hero__arch {
+  background: #1a2320;
+  box-shadow: 0 60px 120px -50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(184, 135, 47, 0.25);
+}
+html[data-theme="dark"] .hero__seal {
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7);
+}
+/* moving project logos: ash on night */
+html[data-theme="dark"] .logos {
+  --ash: rgba(236, 230, 218, 0.26);
+}
+/* dark sections sit a step darker than the page, with a hairline to separate them */
+html[data-theme="dark"] .footer,
+html[data-theme="dark"] .research,
+html[data-theme="dark"] .about__aim {
+  box-shadow: inset 0 1px 0 rgba(236, 230, 218, 0.08);
+}
+/* header glass on night (also used when the page is light behind it but the theme is dark) */
+html[data-theme="dark"] .nav:not(.is-open) .nav__bar {
+  background: rgba(17, 24, 21, 0.55);
+  border-color: rgba(233, 199, 123, 0.2);
+  color: var(--ink);
+}
+html[data-theme="dark"].scrolled .nav:not(.is-open) .nav__bar {
+  background: rgba(14, 20, 18, 0.88);
+  border-color: rgba(233, 199, 123, 0.24);
+  box-shadow: 0 18px 44px -24px rgba(0, 0, 0, 0.8);
+}
+html[data-theme="dark"] .nav__cta {
+  background: var(--cream);
+  color: var(--night);
+}
+html[data-theme="dark"] .nav__cta:hover {
+  background: var(--teal);
+  color: #fff;
+}
+html[data-theme="dark"] .nav__links a.is-current {
+  background: rgba(47, 165, 150, 0.16);
+  color: var(--teal-deep);
+}
+/* solid buttons turn cream with dark text; the teal-gold fill still rises on hover */
+/* :where keeps these weaker than the project themes' own button colours */
+html[data-theme="dark"] :where(.btn--solid) {
+  background: var(--cream);
+  color: var(--night);
+}
+html[data-theme="dark"] :where(.btn--solid:hover, .btn--line:hover) {
+  color: #fff;
+}
+html[data-theme="dark"] .form input,
+html[data-theme="dark"] .form textarea,
+html[data-theme="dark"] .form select {
+  background: var(--paper);
+  color: var(--ink);
+}
+/* light-branded project themes get a night version of their own colours */
+html[data-theme="dark"] .t-safar {
+  background: #0c0d10;
+  color: #ececef;
+}
+html[data-theme="dark"] .t-sakinah {
+  --brown: #eadfca;
+  background: #15120c;
+  color: var(--brown);
+}
+
+/* ---------- light / dark switch ---------- */
+.theme-btn {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 135, 47, 0.45);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.35s, border-color 0.35s, transform 0.6s var(--ease-out);
+}
+.theme-btn:hover {
+  background: rgba(4, 122, 110, 0.12);
+  border-color: var(--teal);
+}
+.theme-btn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.7s var(--ease-out);
+}
+.theme-btn:active svg {
+  transform: rotate(-40deg) scale(0.9);
+}
+.theme-btn .i-sun {
+  display: none;
+}
+html[data-theme="dark"] .theme-btn .i-sun {
+  display: block;
+}
+html[data-theme="dark"] .theme-btn .i-moon {
+  display: none;
+}
+.nav-dark .nav:not(.is-open) .theme-btn {
+  border-color: rgba(233, 199, 123, 0.4);
+}
+/* smooth cross-fade only while switching (class set for a moment by the switch) */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, fill 0.5s ease !important;
+}
+@media (max-width: 640px) {
+  .theme-btn {
+    width: 38px;
+    height: 38px;
+  }
 }

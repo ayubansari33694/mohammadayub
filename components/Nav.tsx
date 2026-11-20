@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/site";
 import InstallApp from "@/components/InstallApp";
+import ThemeToggle from "@/components/ThemeToggle";
 import { projectsFor } from "@/lib/projects-i18n";
 import { href, langs, langNames, type Dict, type Lang } from "@/lib/i18n";
 
@@ -120,6 +121,7 @@ export default function Nav({ lang, d }: { lang: Lang; d: Dict }) {
           <span className="nav__time" aria-label={`${d.nav.time} ${time}`}>
             <i aria-hidden /> {d.nav.time} <span dir="ltr">{time}</span>
           </span>
+          <ThemeToggle labels={d.theme} />
           <div className="langsw" role="group" aria-label="Language">
             {langs.map((l) => (
               <Link
