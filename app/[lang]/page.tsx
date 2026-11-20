@@ -8,6 +8,7 @@ import Loader from "@/components/Loader";
 import RoleCycler from "@/components/RoleCycler";
 import ContactForm from "@/components/ContactForm";
 import Split from "@/components/Split";
+import PortraitDeck from "@/components/PortraitDeck";
 
 const thumbs: Record<string, string> = {
   "safar-nama": "/work/safar-nama/ayub-forest.jpg",
@@ -18,12 +19,12 @@ const thumbs: Record<string, string> = {
   sundus: "/brand/sundus-card.svg",
 };
 
-/** Logos for the watermark ribbon, used as masks (shape only, painted ash). Sundus has no logo yet, so its Arabic name stands in. */
-const ribbonLogos: Record<string, { src: string; ratio: string }> = {
+/** Project logos, used as masks (shape only, painted ash). Sundus has no logo yet, so its Arabic name stands in. */
+const ribbonLogos: Record<string, { src: string; ratio: string; scale?: number }> = {
   "safar-nama": { src: "/work/safar-nama/logo-dark.png", ratio: "600 / 593" },
-  "as-sakinah": { src: "/work/as-sakinah/arabic.png", ratio: "500 / 492" },
+  "as-sakinah": { src: "/work/as-sakinah/arabic.png", ratio: "500 / 492", scale: 1.25 },
   "story-behind-history": { src: "/work/story-behind-history/logo.png", ratio: "900 / 370" },
-  mystrick: { src: "/brand/ribbon/mystrick.svg", ratio: "1 / 1" },
+  mystrick: { src: "/brand/ribbon/mystrick.svg", ratio: "1 / 1", scale: 1.3 },
   "attar-lagbe": { src: "/work/attar-lagbe/logo-light.png", ratio: "700 / 542" },
 };
 
@@ -80,9 +81,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
 
           <div className="hero__portrait">
-            <div className="hero__arch" data-tilt="10">
-              <span className="hero__sheen" aria-hidden />
-              <Image src="/brand/ayub-portrait.jpg" alt={d.hero.portraitAlt} width={460} height={572} priority sizes="(max-width: 800px) 70vw, 30vw" />
+            <div className="hero__arch hero__arch--deck" data-tilt="10">
+              <PortraitDeck alt={d.hero.portraitAlt} />
             </div>
             <div className="hero__seal" aria-hidden>
               <svg viewBox="0 0 200 200">
@@ -110,50 +110,27 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      <div className="marquee" aria-hidden>
-        <div className="marquee__track">
-          {Array.from({ length: 2 }).map((_, k) => (
-            <span key={k}>
-              {d.marquee.map((w, i) => (
-                <span key={i}>
-                  {w} <b>✦</b>{" "}
-                </span>
-              ))}
-            </span>
+      {/* project logos only, evenly spaced (AYUB, 2026-11-20: no black word band, no names) */}
+      <nav className="logos" aria-label={d.nav.projects} data-reveal>
+        <ul className="logos__row wrap">
+          {projects.map((p, i) => (
+            <li key={p.slug} style={{ ["--i" as string]: i }}>
+              <Link href={L(`/work/${p.slug}`)} className="logos__item" aria-label={p.name} title={p.name}>
+                {ribbonLogos[p.slug] ? (
+                  <span
+                    className="logos__mark"
+                    style={{ ["--logo" as string]: `url(${ribbonLogos[p.slug].src})`, ["--ar" as string]: ribbonLogos[p.slug].ratio, ["--sc" as string]: ribbonLogos[p.slug].scale ?? 1 }}
+                    aria-hidden
+                  />
+                ) : (
+                  <span className="logos__mark logos__mark--text" lang="ar" aria-hidden>
+                    سندس
+                  </span>
+                )}
+              </Link>
+            </li>
           ))}
-        </div>
-      </div>
-
-      {/* project logos as a watermark ribbon, right to left */}
-      <nav className="ribbon" aria-label={d.nav.projects} data-reveal>
-        <div className="ribbon__track" dir="ltr">
-          {[0, 1].map((k) => (
-            <div key={k} className="ribbon__set" aria-hidden={k === 1 || undefined}>
-              {projects.map((p, i) => (
-                <Link
-                  key={p.slug}
-                  href={L(`/work/${p.slug}`)}
-                  className="ribbon__item"
-                  tabIndex={k === 1 ? -1 : undefined}
-                  style={{ ["--i" as string]: i }}
-                >
-                  {ribbonLogos[p.slug] ? (
-                    <span
-                      className="ribbon__logo"
-                      style={{ ["--logo" as string]: `url(${ribbonLogos[p.slug].src})`, ["--ar" as string]: ribbonLogos[p.slug].ratio }}
-                      aria-hidden
-                    />
-                  ) : (
-                    <span className="ribbon__logo ribbon__logo--text" lang="ar" aria-hidden>
-                      سندس
-                    </span>
-                  )}
-                  <span className="ribbon__name">{p.name}</span>
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
+        </ul>
       </nav>
 
       {/* ─────────────── ABOUT ─────────────── */}

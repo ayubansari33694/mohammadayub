@@ -58,6 +58,26 @@ export default function Nav({ lang, d }: { lang: Lang; d: Dict }) {
   const pathname = usePathname();
   const time = useDhakaTime();
 
+  // which section is on screen, to mark its link in the header (home page only)
+  const [current, setCurrent] = useState("");
+  useEffect(() => {
+    const ids = ["about", "work", "ventures", "education", "contact"];
+    const els = ids.map((id) => document.getElementById(id)).filter((e): e is HTMLElement => !!e);
+    setCurrent("");
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setCurrent(e.target.id)),
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    els.forEach((e) => io.observe(e));
+    const top = () => window.scrollY < window.innerHeight * 0.5 && setCurrent("");
+    window.addEventListener("scroll", top, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", top);
+    };
+  }, [pathname]);
+
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     const root = document.documentElement;
@@ -90,7 +110,7 @@ export default function Nav({ lang, d }: { lang: Lang; d: Dict }) {
 
         <nav className="nav__links" aria-label={d.nav.navigate}>
           {nav.map((n) => (
-            <Link key={n.href} href={n.href}>
+            <Link key={n.href} href={n.href} className={current && n.href.endsWith(`#${current}`) ? "is-current" : undefined}>
               <Roll>{n.label}</Roll>
             </Link>
           ))}
