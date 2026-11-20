@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /** Opening sequence, once per visit: counter, mark, name, then the curtain lifts. */
-export default function Loader() {
+export default function Loader({ name = "MOHAMMAD AYUB", caption = "Portfolio · MMXXVI" }: { name?: string; caption?: string }) {
   const [state, setState] = useState<"show" | "leave" | "gone">("show");
   const [n, setN] = useState(0);
 
@@ -45,7 +45,6 @@ export default function Loader() {
   }, []);
 
   if (state === "gone") return null;
-  const name = "MOHAMMAD AYUB";
   return (
     <div className={`loader${state === "leave" ? " is-leaving" : ""}`} aria-hidden>
       <div className="loader__panel loader__panel--a" />
@@ -56,14 +55,15 @@ export default function Loader() {
           <img src="/brand/ayub-mark.png" alt="" width={110} height={81} />
         </div>
         <div className="loader__name">
-          {Array.from(name).map((c, i) => (
+          {/* Latin letters animate one by one; Bengali and Arabic stay whole so letters keep joining */}
+          {(/^[\x00-\x7F]+$/.test(name) ? Array.from(name) : [name]).map((c, i) => (
             <span key={i} style={{ ["--i" as string]: i }}>
               {c === " " ? " " : c}
             </span>
           ))}
         </div>
         <div className="loader__meta">
-          <span>Portfolio · MMXXVI</span>
+          <span>{caption}</span>
           <span className="loader__count">{String(n).padStart(3, "0")}</span>
         </div>
         <div className="loader__bar">

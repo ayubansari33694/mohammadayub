@@ -4,8 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { nav, site } from "@/lib/site";
-import { projects } from "@/lib/projects";
+import { site } from "@/lib/site";
+import { projectsFor } from "@/lib/projects-i18n";
+import { href, langs, langNames, type Dict, type Lang } from "@/lib/i18n";
 
 const thumbs: Record<string, string> = {
   "safar-nama": "/work/safar-nama/ayub-forest.jpg",
@@ -36,7 +37,21 @@ function Roll({ children }: { children: string }) {
   );
 }
 
-export default function Nav() {
+/** The same page in another language: strip any /bn or /ar prefix, then add the new one. */
+export function switchPath(pathname: string, to: Lang) {
+  const bare = pathname.replace(/^\/(bn|ar)(?=\/|$)/, "") || "/";
+  return href(to, bare);
+}
+
+export default function Nav({ lang, d }: { lang: Lang; d: Dict }) {
+  const projects = projectsFor(lang);
+  const nav = [
+    { href: href(lang, "/#about"), label: d.nav.about },
+    { href: href(lang, "/#work"), label: d.nav.work },
+    { href: href(lang, "/#ventures"), label: d.nav.ventures },
+    { href: href(lang, "/#education"), label: d.nav.education },
+    { href: href(lang, "/#contact"), label: d.nav.contact },
+  ];
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(projects[0].slug);
   const pathname = usePathname();
@@ -63,16 +78,16 @@ export default function Nav() {
     <header className={`nav${open ? " is-open" : ""}`}>
       <div className="progress" aria-hidden />
       <div className="nav__bar">
-        <Link href="/" className="nav__brand" aria-label="Mohammad Ayub, home" data-magnetic="0.2">
+        <Link href={href(lang, "/")} className="nav__brand" aria-label={`${d.name.full}, ${d.nav.home}`} data-magnetic="0.2">
           <span className="nav__mark">
             <Image src="/brand/ayub-mark.png" alt="" width={38} height={28} priority />
           </span>
           <span className="nav__name">
-            <Roll>Mohammad Ayub</Roll>
+            <Roll>{d.name.full}</Roll>
           </span>
         </Link>
 
-        <nav className="nav__links" aria-label="Main">
+        <nav className="nav__links" aria-label={d.nav.navigate}>
           {nav.map((n) => (
             <Link key={n.href} href={n.href}>
               <Roll>{n.label}</Roll>
@@ -81,17 +96,32 @@ export default function Nav() {
         </nav>
 
         <div className="nav__right">
-          <span className="nav__time" aria-label={`Local time in Dhaka ${time}`}>
-            <i aria-hidden /> Dhaka {time}
+          <span className="nav__time" aria-label={`${d.nav.time} ${time}`}>
+            <i aria-hidden /> {d.nav.time} <span dir="ltr">{time}</span>
           </span>
-          <Link href="/#contact" className="nav__cta" data-magnetic="0.25">
-            <Roll>Let&rsquo;s talk</Roll>
+          <div className="langsw" role="group" aria-label="Language">
+            {langs.map((l) => (
+              <Link
+                key={l}
+                href={switchPath(pathname, l)}
+                hrefLang={l}
+                lang={l}
+                className={l === lang ? "is-on" : ""}
+                aria-current={l === lang ? "true" : undefined}
+                title={langNames[l].name}
+              >
+                {langNames[l].short}
+              </Link>
+            ))}
+          </div>
+          <Link href={href(lang, "/#contact")} className="nav__cta" data-magnetic="0.25">
+            <Roll>{d.nav.talk}</Roll>
           </Link>
           <button
             className="nav__toggle"
             aria-expanded={open}
             aria-controls="menu"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? d.nav.close : d.nav.menu}
             onClick={() => setOpen((v) => !v)}
             data-magnetic="0.35"
           >
@@ -107,9 +137,9 @@ export default function Nav() {
         </div>
         <div className="menu__inner">
           <div className="menu__col">
-            <p className="label">Navigate</p>
+            <p className="label">{d.nav.navigate}</p>
             <ol className="menu__nav">
-              {[{ href: "/", label: "Home" }, ...nav].map((n, i) => (
+              {[{ href: href(lang, "/"), label: d.nav.home }, ...nav].map((n, i) => (
                 <li key={n.href} style={{ ["--i" as string]: i }}>
                   <Link href={n.href} onClick={() => setOpen(false)}>
                     <small>0{i + 1}</small>
@@ -120,11 +150,11 @@ export default function Nav() {
             </ol>
           </div>
           <div className="menu__col menu__work">
-            <p className="label">Projects</p>
+            <p className="label">{d.nav.projects}</p>
             <ul>
               {projects.map((p, i) => (
                 <li key={p.slug} style={{ ["--i" as string]: i + 2 }} onMouseEnter={() => setActive(p.slug)} onFocus={() => setActive(p.slug)}>
-                  <Link href={`/work/${p.slug}`} onClick={() => setOpen(false)} className={active === p.slug ? "is-active" : ""}>
+                  <Link href={href(lang, `/work/${p.slug}`)} onClick={() => setOpen(false)} className={active === p.slug ? "is-active" : ""}>
                     <span>{p.no}</span> {p.name}
                   </Link>
                 </li>
@@ -138,8 +168,15 @@ export default function Nav() {
             </div>
           </div>
           <div className="menu__foot">
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-            <span>{site.phone}</span>
+            <a href={`mailto:${site.email}`} dir="ltr">{site.email}</a>
+            <span dir="ltr">{site.phone}</span>
+            <span className="menu__langs">
+              {langs.map((l) => (
+                <Link key={l} href={switchPath(pathname, l)} hrefLang={l} lang={l} className={l === lang ? "is-on" : ""}>
+                  {langNames[l].name}
+                </Link>
+              ))}
+            </span>
             <span className="menu__socials">
               {site.socials.map((s) => (
                 <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">

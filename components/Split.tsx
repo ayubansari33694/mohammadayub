@@ -9,7 +9,9 @@ import { Fragment } from "react";
  */
 type Props = { text: string; mode?: "chars" | "words" | "scrub"; className?: string; delay?: number; step?: number };
 
-export default function Split({ text, mode = "words", className, delay = 0, step }: Props) {
+export default function Split({ text, mode: wanted = "words", className, delay = 0, step }: Props) {
+  // Splitting Bengali or Arabic into letters would break how they join, so those split by word.
+  const mode = wanted === "chars" && !/^[\x00-\x7F]+$/.test(text) ? "words" : wanted;
   const words = text.split(" ");
   let n = 0;
   const s = step ?? (mode === "chars" ? 45 : 60);

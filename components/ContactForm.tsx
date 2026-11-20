@@ -2,10 +2,11 @@
 
 import { useRef, useState } from "react";
 import { site } from "@/lib/site";
+import type { Dict } from "@/lib/i18n";
 
 type Status = { kind: "idle" | "sending" | "sent" | "mailto" | "error"; msg?: string };
 
-export default function ContactForm() {
+export default function ContactForm({ f }: { f: Dict["contact"]["form"] }) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const started = useRef(Date.now());
 
@@ -33,9 +34,9 @@ export default function ContactForm() {
         setStatus({ kind: "mailto" });
         return;
       }
-      setStatus({ kind: "error", msg: json.error || "Something went wrong. Please try again." });
+      setStatus({ kind: "error", msg: f.error });
     } catch {
-      setStatus({ kind: "error", msg: "Network error. Please try again, or email me directly." });
+      setStatus({ kind: "error", msg: f.network });
     }
   }
 
@@ -43,35 +44,35 @@ export default function ContactForm() {
     <form className="form" onSubmit={onSubmit} noValidate={false}>
       <div className="form__row">
         <label>
-          <span>Your name</span>
+          <span>{f.name}</span>
           <input name="name" required maxLength={80} autoComplete="name" />
         </label>
         <label>
-          <span>Email</span>
+          <span>{f.email}</span>
           <input name="email" type="email" required maxLength={120} autoComplete="email" />
         </label>
       </div>
       <label>
-        <span>Subject</span>
+        <span>{f.subject}</span>
         <input name="subject" maxLength={120} />
       </label>
       <label>
-        <span>Message</span>
+        <span>{f.message}</span>
         <textarea name="message" required minLength={10} maxLength={4000} rows={5} />
       </label>
       {/* honeypot: real visitors never see or fill this */}
       <label className="hp" aria-hidden>
-        <span>Leave this empty</span>
+        <span>{f.hp}</span>
         <input name="company" tabIndex={-1} autoComplete="off" />
       </label>
       <div className="form__foot">
         <button className="btn btn--solid" disabled={status.kind === "sending"}>
-          {status.kind === "sending" ? "Sending…" : "Send message"}
-          <span aria-hidden>→</span>
+          {status.kind === "sending" ? f.sending : f.send}
+          <span aria-hidden className="flip">→</span>
         </button>
         <p className="form__status" role="status" aria-live="polite">
-          {status.kind === "sent" && "Thank you. Your message has been sent."}
-          {status.kind === "mailto" && "Your email app should open with the message ready to send."}
+          {status.kind === "sent" && f.sent}
+          {status.kind === "mailto" && f.mailto}
           {status.kind === "error" && status.msg}
         </p>
       </div>

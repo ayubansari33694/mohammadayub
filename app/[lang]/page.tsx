@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
-import { projects } from "@/lib/projects";
+import { projectsFor } from "@/lib/projects-i18n";
+import { t, href, isLang, type Lang } from "@/lib/i18n";
 import { panelFor } from "@/components/Panels";
 import Loader from "@/components/Loader";
 import RoleCycler from "@/components/RoleCycler";
@@ -17,91 +18,17 @@ const thumbs: Record<string, string> = {
   sundus: "/brand/sundus-card.svg",
 };
 
-const education = [
-  {
-    when: "Now",
-    level: "Second-year student · Al-Hadith and Islamic Studies",
-    school: "Tamirul Millat Kamil Madrasa, Tongi Campus",
-    place: "Tongi, Gazipur, Bangladesh",
-    note: "First-year examinations completed; results not yet published.",
-    current: true,
-  },
-  {
-    when: "2024",
-    level: "Alim (HSC equivalent) · Humanities",
-    school: "Darunnajat Siddikia Kamil Madrasa",
-    place: "Dhaka, Bangladesh",
-    note: "GPA 5.00 (A+)",
-  },
-  {
-    when: "2022",
-    level: "Dakhil (SSC equivalent) · Humanities",
-    school: "Dhani Safa Salehia Fazil Madrasa",
-    place: "Pirojpur, Bangladesh",
-    note: "GPA 5.00 (A+)",
-  },
-  {
-    when: "1437–1438 AH",
-    level: "Elementary Certificate (Ebtedai)",
-    school: "Al-Mowaddah Primary School for Memorization",
-    place: "Khamis Mushait, Aseer, Saudi Arabia",
-    note: "Result: Excellent",
-  },
-];
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: raw } = await params;
+  const lang = (isLang(raw) ? raw : "en") as Lang;
+  const d = t(lang);
+  const projects = projectsFor(lang);
+  const L = (p: string) => href(lang, p);
+  const arrow = lang === "ar" ? "←" : "→";
 
-const skills = [
-  {
-    title: "Creative & Design",
-    lead: "Giving ideas a face.",
-    items: ["Graphic design", "Typography", "Visual identity design", "Branding and creative direction"],
-  },
-  {
-    title: "Video & Motion",
-    lead: "Telling it in time.",
-    items: ["Video editing", "Motion graphics"],
-  },
-  {
-    title: "Digital & Business",
-    lead: "Taking it to people.",
-    items: ["Digital marketing", "Digital content creation", "Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint"],
-  },
-];
-
-const languages = [
-  { name: "Bengali", native: "বাংলা", value: 99, cls: "bn" },
-  { name: "Arabic", native: "العربية", value: 90, cls: "ar" },
-  { name: "English", native: "English", value: 80, cls: "en" },
-];
-
-const interests = [
-  {
-    k: "Hadith & the Islamic sciences",
-    v: "My formal study. The discipline of checking a report's chain and its text shapes how I treat every source, in every field.",
-    href: "/work/as-sakinah",
-    link: "As-Sakinah",
-  },
-  {
-    k: "History, read from sources",
-    v: "Civilisations, dynasties and battles placed on one map and one timeline, with each story added only after verification.",
-    href: "/work/story-behind-history",
-    link: "Story Behind History",
-  },
-  {
-    k: "Science & technology",
-    v: "Discoveries, space, computing and the ideas behind modern AI, explained clearly and always linked to the original source.",
-    href: "/work/mystrick",
-    link: "Mystrick",
-  },
-  {
-    k: "AI & automation",
-    v: "I work AI-first: using AI tools and agents to research, design, build and run projects that would otherwise need a team.",
-  },
-];
-
-export default function Home() {
   return (
     <>
-      <Loader />
+      <Loader name={d.name.full.toUpperCase()} caption={d.loader} />
 
       {/* ─────────────── HERO ─────────────── */}
       <section className="hero" aria-labelledby="hero-name">
@@ -113,32 +40,30 @@ export default function Home() {
         <div className="hero__grid wrap">
           <div className="hero__copy">
             <p className="label hero__kicker">
-              <span>Personal portfolio</span>
-              <span>Bangladesh</span>
+              <span>{d.hero.kicker[0]}</span>
+              <span>{d.hero.kicker[1]}</span>
             </p>
             <h1 id="hero-name" className="hero__name">
               <span className="hero__line">
-                <Split text="Mohammad" mode="chars" delay={150} />
+                <Split text={d.name.first} mode={lang === "en" ? "chars" : "words"} delay={150} />
               </span>
               <span className="hero__line hero__line--2">
-                <Split text="Ayub" mode="words" delay={520} className="gold" />
-                <span className="hero__ar" lang="ar" aria-hidden>
-                  محمد أيوب
+                <Split text={d.name.last} mode="words" delay={520} className="gold" />
+                <span className="hero__ar" lang={lang === "en" ? "ar" : "en"} aria-hidden>
+                  {d.hero.secondary}
                 </span>
               </span>
             </h1>
             <p className="hero__roles">
-              <RoleCycler roles={site.roles} />
+              <RoleCycler roles={d.roles} />
             </p>
-            <p className="hero__intro">
-              I study the Hadith and the Islamic sciences, and I build things: brands, digital platforms, films and ventures. This is where all of them meet.
-            </p>
+            <p className="hero__intro">{d.hero.intro}</p>
             <div className="hero__cta">
-              <Link href="/#work" className="btn btn--solid" data-magnetic="0.25">
-                Explore my work <span aria-hidden>↓</span>
+              <Link href={L("/#work")} className="btn btn--solid" data-magnetic="0.25">
+                {d.hero.explore} <span aria-hidden>↓</span>
               </Link>
-              <Link href="/#contact" className="btn btn--line" data-magnetic="0.25">
-                Get in touch
+              <Link href={L("/#contact")} className="btn btn--line" data-magnetic="0.25">
+                {d.hero.touch}
               </Link>
             </div>
           </div>
@@ -146,14 +71,7 @@ export default function Home() {
           <div className="hero__portrait">
             <div className="hero__arch" data-tilt="10">
               <span className="hero__sheen" aria-hidden />
-              <Image
-                src="/brand/ayub-portrait.jpg"
-                alt="Portrait of Mohammad Ayub"
-                width={460}
-                height={572}
-                priority
-                sizes="(max-width: 800px) 70vw, 30vw"
-              />
+              <Image src="/brand/ayub-portrait.jpg" alt={d.hero.portraitAlt} width={460} height={572} priority sizes="(max-width: 800px) 70vw, 30vw" />
             </div>
             <div className="hero__seal" aria-hidden>
               <svg viewBox="0 0 200 200">
@@ -161,17 +79,17 @@ export default function Home() {
                   <path id="seal" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
                 </defs>
                 <text>
-                  <textPath href="#seal">KNOWLEDGE · CREATIVITY · TECHNOLOGY · ENTERPRISE · </textPath>
+                  <textPath href="#seal">{d.hero.seal}</textPath>
                 </text>
               </svg>
               <Image src="/brand/ayub-mark.png" alt="" width={70} height={51} />
             </div>
-            <p className="hero__caption label">Student · Al-Hadith & Islamic Studies</p>
+            <p className="hero__caption label">{d.hero.caption}</p>
           </div>
         </div>
         <div className="hero__index wrap" aria-hidden>
           <span className="hero__scroll">
-            <i /> Scroll
+            <i /> {d.hero.scroll}
           </span>
           {projects.map((p) => (
             <span key={p.slug}>
@@ -185,8 +103,11 @@ export default function Home() {
         <div className="marquee__track">
           {Array.from({ length: 2 }).map((_, k) => (
             <span key={k}>
-              Knowledge <b>✦</b> Design <b>✦</b> Enterprise <b>✦</b> Technology <b>✦</b> Storytelling <b>✦</b> Research <b>✦</b>{" "}
-              <span lang="ar">العلم</span> <b>✦</b>{" "}
+              {d.marquee.map((w, i) => (
+                <span key={i}>
+                  {w} <b>✦</b>{" "}
+                </span>
+              ))}
             </span>
           ))}
         </div>
@@ -195,41 +116,27 @@ export default function Home() {
       {/* ─────────────── ABOUT ─────────────── */}
       <section className="section about" id="about" aria-labelledby="about-t">
         <div className="wrap">
-          <p className="label" data-reveal>01 — About</p>
+          <p className="label" data-reveal>
+            {d.about.label}
+          </p>
           <h2 id="about-t" className="about__statement">
-            <Split mode="scrub" text="A student by calling, a maker by habit. I believe knowledge, creativity, technology and enterprise belong in the same hands." />
+            <Split mode="scrub" text={d.about.statement} />
           </h2>
           <div className="about__cols">
             <div className="about__text" data-reveal>
-              <p>
-                I am a student of Al-Hadith and Islamic Studies with a wide, restless curiosity. Alongside my studies I work across Islamic scholarship, creative design,
-                digital technology, entrepreneurship and research.
-              </p>
-              <p>
-                What I enjoy most is turning an idea into something real: a visual identity, a website people use, a film, a business with customers. Each project on this
-                site is one expression of that habit. Some are about knowledge, some about stories, one is about fragrance, and all of them were built with the same care.
-              </p>
-              <p>
-                My early schooling was in Saudi Arabia, and my madrasa education continued in Bangladesh. Bengali, Arabic and English are the three languages I live and work in.
-              </p>
+              {d.about.p.map((x, i) => (
+                <p key={i}>{x}</p>
+              ))}
             </div>
             <aside className="about__aim" data-reveal>
-              <p className="label">My aim</p>
+              <p className="label">{d.about.aimLabel}</p>
               <blockquote>
-                <p>
-                  Above all, I want to be a sincere and devoted Muslim: to grow, through the pursuit of sacred knowledge, into a knowledgeable and capable scholar; to draw closer to
-                  Allah; and to carry the message of Islam to others with wisdom and compassion.
-                </p>
+                <p>{d.about.aim}</p>
               </blockquote>
             </aside>
           </div>
           <ul className="principles">
-            {[
-              ["Verify, then publish", "Whether it is a hadith, a date in history or a scientific claim, nothing goes out unchecked."],
-              ["Build, don't just plan", "Plans matter only when they turn into working things. I prefer shipping and improving."],
-              ["AI-first, people-centred", "I use AI to do more with less, so the work can serve more people."],
-              ["Create opportunity", "My long-term aim is ventures that grow large enough to create work for others."],
-            ].map(([k, v], i) => (
+            {d.about.principles.map(([k, v], i) => (
               <li key={k} data-reveal style={{ ["--d" as string]: `${i * 80}ms` }}>
                 <span className="principles__n">0{i + 1}</span>
                 <h3>{k}</h3>
@@ -243,25 +150,26 @@ export default function Home() {
       {/* ─────────────── WORK ─────────────── */}
       <section className="work" id="work" aria-labelledby="work-t">
         <div className="wrap work__intro">
-          <p className="label" data-reveal>02 — Projects & ventures</p>
+          <p className="label" data-reveal>
+            {d.work.label}
+          </p>
           <h2 id="work-t" className="work__title">
-            <Split text="Six worlds." mode="chars" step={35} /> <em><Split text="One maker." mode="chars" delay={380} step={35} /></em>
+            <Split text={d.work.title1} mode="words" step={70} /> <em><Split text={d.work.title2} mode="words" delay={300} step={70} /></em>
           </h2>
           <p className="work__lede" data-reveal>
-            Every project has its own name, its own audience and its own visual language. Together they map what I care about: travel, faith, history, science, enterprise and
-            craft.
+            {d.work.lede}
           </p>
           <ol className="work__index">
             {projects.map((p) => (
               <li key={p.slug} data-reveal>
-                <a href={`#${p.slug}`} data-preview={thumbs[p.slug]} data-cursor="View">
+                <a href={`#${p.slug}`} data-preview={thumbs[p.slug]} data-cursor={d.work.view}>
                   <span className="work__no">{p.no}</span>
                   <span className="work__name">{p.name}</span>
                   <span className="work__native" lang={p.slug === "sundus" ? "ar" : "bn"}>
-                    {p.native ? p.native.split(" · ").pop() : ""}
+                    {lang === "en" && p.native ? p.native.split(" · ").pop() : ""}
                   </span>
                   <span className="work__cat">{p.category.split(" · ")[0]}</span>
-                  <span className="work__status">{p.status}</span>
+                  <span className="work__status">{d.status[p.status]}</span>
                 </a>
               </li>
             ))}
@@ -269,36 +177,35 @@ export default function Home() {
         </div>
         {projects.map((p) => {
           const Panel = panelFor[p.slug];
-          return <Panel key={p.slug} p={p} />;
+          return <Panel key={p.slug} p={p} lang={lang} d={d} />;
         })}
       </section>
 
       {/* ─────────────── VENTURES ─────────────── */}
       <section className="section ventures" id="ventures" aria-labelledby="ventures-t">
         <div className="wrap">
-          <p className="label" data-reveal>03 — Ventures & entrepreneurship</p>
+          <p className="label" data-reveal>
+            {d.ventures.label}
+          </p>
           <h2 id="ventures-t" className="section__title" data-reveal>
-            One brand on the market. <em>One in the making.</em>
+            {d.ventures.title1} <em>{d.ventures.title2}</em>
           </h2>
           <div className="ventures__grid">
             <article className="venture venture--live" data-reveal data-tilt="5">
               <header>
-                <span className="chip chip--live">Live business</span>
+                <span className="chip chip--live">{d.ventures.live}</span>
                 <Image src="/work/attar-lagbe/logo.png" alt="Attar Lagbe logo" width={150} height={116} />
-                <span className="venture__shine" aria-hidden />
               </header>
-              <h3>Attar Lagbe</h3>
-              <p>A fragrance brand that sells authentic, alcohol-free attar and perfume oils across Bangladesh, online, with cash on delivery.</p>
-              <p className="label">What I built</p>
+              <h3>{projects.find((p) => p.slug === "attar-lagbe")!.name}</h3>
+              <p>{d.ventures.attar}</p>
+              <p className="label">{d.ventures.built}</p>
               <ul className="ticks">
-                <li>Brand identity and Bengali calligraphic logo</li>
-                <li>Product presentation and photography</li>
-                <li>Packaging and visual branding</li>
-                <li>Bilingual e-commerce website</li>
-                <li>Digital marketing and creative content</li>
+                {d.ventures.builtList.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
               </ul>
               <div className="venture__links">
-                <Link href="/work/attar-lagbe">Case study →</Link>
+                <Link href={L("/work/attar-lagbe")}>{d.ventures.caseStudy}</Link>
                 <a href="https://www.attarlagbe.com" target="_blank" rel="noopener noreferrer">
                   attarlagbe.com ↗
                 </a>
@@ -306,23 +213,21 @@ export default function Home() {
             </article>
             <article className="venture venture--soon" data-reveal data-tilt="5" style={{ ["--d" as string]: "120ms" }}>
               <header>
-                <span className="chip chip--soon">In preparation</span>
+                <span className="chip chip--soon">{d.ventures.soon}</span>
                 <span className="venture__ar" lang="ar">
                   سندس
                 </span>
               </header>
-              <h3>Sundus</h3>
-              <p>A modest-fashion and clothing brand with Arabian influences, being prepared for launch. Not yet open for orders.</p>
-              <p className="label">Planned range</p>
+              <h3>{projects.find((p) => p.slug === "sundus")!.name}</h3>
+              <p>{d.ventures.sundus}</p>
+              <p className="label">{d.ventures.planned}</p>
               <ul className="ticks ticks--soon">
-                <li>Jubba</li>
-                <li>Abaya</li>
-                <li>Hijab and niqab</li>
-                <li>Burqa</li>
-                <li>Other modest and Arabian-inspired wear</li>
+                {d.ventures.plannedList.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
               </ul>
               <div className="venture__links">
-                <Link href="/work/sundus">About the venture →</Link>
+                <Link href={L("/work/sundus")}>{d.ventures.aboutVenture}</Link>
               </div>
             </article>
           </div>
@@ -333,23 +238,25 @@ export default function Home() {
       <section className="section education" id="education" aria-labelledby="edu-t">
         <div className="wrap edu__grid">
           <div className="edu__head">
-            <p className="label" data-reveal>04 — Education</p>
+            <p className="label" data-reveal>
+              {d.edu.label}
+            </p>
             <h2 id="edu-t" className="section__title" data-reveal>
-              From Khamis Mushait <em>to Tongi.</em>
+              {d.edu.title1} <em>{d.edu.title2}</em>
             </h2>
             <p className="edu__lede" data-reveal>
-              A madrasa education that began in Saudi Arabia and continues today in the study of the Hadith.
+              {d.edu.lede}
             </p>
           </div>
           <ol className="timeline" data-progress="long">
-            {education.map((e, i) => (
+            {d.edu.items.map((e, i) => (
               <li key={e.school} className={e.current ? "is-current" : ""} data-reveal style={{ ["--d" as string]: `${i * 90}ms` }}>
                 <span className="timeline__when">{e.when}</span>
                 <div className="timeline__body">
                   <h3>{e.school}</h3>
                   <p className="timeline__level">{e.level}</p>
                   <p className="timeline__place">{e.place}</p>
-                  <p className={`timeline__note${e.note.startsWith("GPA") ? " is-grade" : ""}`}>{e.note}</p>
+                  <p className={`timeline__note${e.grade ? " is-grade" : ""}`}>{e.note}</p>
                 </div>
               </li>
             ))}
@@ -360,12 +267,14 @@ export default function Home() {
       {/* ─────────────── SKILLS & LANGUAGES ─────────────── */}
       <section className="section skills" id="skills" aria-labelledby="skills-t">
         <div className="wrap">
-          <p className="label" data-reveal>05 — Skills & expertise</p>
+          <p className="label" data-reveal>
+            {d.skills.label}
+          </p>
           <h2 id="skills-t" className="section__title" data-reveal>
-            The toolkit <em>behind the work.</em>
+            {d.skills.title1} <em>{d.skills.title2}</em>
           </h2>
           <div className="skills__grid">
-            {skills.map((s, i) => (
+            {d.skills.groups.map((s, i) => (
               <div key={s.title} className="skill" data-reveal style={{ ["--d" as string]: `${i * 90}ms` }}>
                 <span className="skill__n">0{i + 1}</span>
                 <h3>{s.title}</h3>
@@ -381,12 +290,12 @@ export default function Home() {
 
           <div className="langs" aria-labelledby="langs-t">
             <div className="langs__head" data-reveal>
-              <h3 id="langs-t">Languages</h3>
-              <p>Self-assessed proficiency, as stated in my CV. Not formal examination scores.</p>
+              <h3 id="langs-t">{d.skills.langsTitle}</h3>
+              <p>{d.skills.langsNote}</p>
             </div>
             <ul className="langs__list">
-              {languages.map((l, i) => (
-                <li key={l.name} className={`lang lang--${l.cls}`} data-reveal style={{ ["--v" as string]: l.value, ["--d" as string]: `${i * 120}ms` }}>
+              {d.skills.langs.map((l, i) => (
+                <li key={l.cls} className={`lang lang--${l.cls}`} data-reveal style={{ ["--v" as string]: l.value, ["--d" as string]: `${i * 120}ms` }}>
                   <svg viewBox="0 0 120 120" aria-hidden>
                     <circle cx="60" cy="60" r="54" className="lang__track" />
                     <circle cx="60" cy="60" r="54" className="lang__bar" pathLength={100} />
@@ -408,17 +317,23 @@ export default function Home() {
       {/* ─────────────── RESEARCH ─────────────── */}
       <section className="section research" id="research" aria-labelledby="research-t">
         <div className="wrap">
-          <p className="label" data-reveal>06 — Research & interests</p>
+          <p className="label" data-reveal>
+            {d.research.label}
+          </p>
           <h2 id="research-t" className="section__title" data-reveal>
-            Curious about how things work, <em>and how we know.</em>
+            {d.research.title1} <em>{d.research.title2}</em>
           </h2>
           <div className="research__grid">
-            {interests.map((it, i) => (
+            {d.research.items.map((it, i) => (
               <article key={it.k} className="interest" data-tilt="6" data-reveal style={{ ["--d" as string]: `${i * 80}ms` }}>
                 <span className="interest__n">{String(i + 1).padStart(2, "0")}</span>
                 <h3>{it.k}</h3>
                 <p>{it.v}</p>
-                {it.href && <Link href={it.href}>See {it.link} →</Link>}
+                {it.slug && (
+                  <Link href={L(`/work/${it.slug}`)}>
+                    {d.research.see} {it.link} {arrow}
+                  </Link>
+                )}
               </article>
             ))}
           </div>
@@ -429,38 +344,46 @@ export default function Home() {
       <section className="section contact" id="contact" aria-labelledby="contact-t">
         <div className="wrap contact__grid">
           <div>
-            <p className="label" data-reveal>07 — Contact</p>
+            <p className="label" data-reveal>
+              {d.contact.label}
+            </p>
             <h2 id="contact-t" className="contact__title">
-              <Split text="Let’s build something" mode="words" /> <em><Split text="meaningful." mode="words" delay={300} /></em>
+              <Split text={d.contact.title1} mode="words" /> <em><Split text={d.contact.title2} mode="words" delay={300} /></em>
             </h2>
             <p className="contact__lede" data-reveal>
-              For collaborations, projects, questions about my ventures, or simply to say salam, write to me. I read every message.
+              {d.contact.lede}
             </p>
             <dl className="contact__list" data-reveal>
               <div>
-                <dt>Email</dt>
+                <dt>{d.contact.email}</dt>
                 <dd>
-                  <a href={`mailto:${site.email}`}>{site.email}</a>
+                  <a href={`mailto:${site.email}`} dir="ltr">
+                    {site.email}
+                  </a>
                 </dd>
               </div>
               <div>
-                <dt>Phone</dt>
+                <dt>{d.contact.phone}</dt>
                 <dd>
-                  <a href={site.phoneHref}>{site.phone}</a>
+                  <a href={site.phoneHref} dir="ltr">
+                    {site.phone}
+                  </a>
                 </dd>
               </div>
               <div>
-                <dt>Website</dt>
+                <dt>{d.contact.website}</dt>
                 <dd>
-                  <a href="https://www.mohammadayub.net">mohammadayub.net</a>
+                  <a href="https://www.mohammadayub.net" dir="ltr">
+                    mohammadayub.net
+                  </a>
                 </dd>
               </div>
               <div>
-                <dt>Location</dt>
-                <dd>{site.location}</dd>
+                <dt>{d.contact.location}</dt>
+                <dd>{d.contact.locationValue}</dd>
               </div>
               <div>
-                <dt>Social</dt>
+                <dt>{d.contact.social}</dt>
                 <dd className="contact__socials">
                   {site.socials.map((s) => (
                     <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">
@@ -472,7 +395,7 @@ export default function Home() {
             </dl>
           </div>
           <div data-reveal>
-            <ContactForm />
+            <ContactForm f={d.contact.form} />
           </div>
         </div>
       </section>

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projects, getProject } from "@/lib/projects";
+import { projects } from "@/lib/projects";
+import { projectFor, projectsFor } from "@/lib/projects-i18n";
+import { langs, t, href, isLang, type Lang } from "@/lib/i18n";
 import { site } from "@/lib/site";
 import Split from "@/components/Split";
 
@@ -19,28 +21,37 @@ function Fact({ v }: { v: string }) {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return langs.flatMap((lang) => projects.map((p) => ({ lang, slug: p.slug })));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const p = getProject(slug);
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }): Promise<Metadata> {
+  const { lang: raw, slug } = await params;
+  const lang = (isLang(raw) ? raw : "en") as Lang;
+  const p = projectFor(slug, lang);
   if (!p) return {};
-  const title = `${p.name}${p.native ? ` (${p.native.split(" · ").pop()})` : ""}`;
+  const d = t(lang);
+  const title = lang === "en" && p.native ? `${p.name} (${p.native.split(" · ").pop()})` : p.name;
+  const path = `/work/${p.slug}`;
   return {
     title,
-    description: `${p.summary} A project by Mohammad Ayub.`,
-    alternates: { canonical: `/work/${p.slug}` },
-    openGraph: { title: `${title} — Mohammad Ayub`, description: p.summary, url: `${site.url}/work/${p.slug}`, type: "article" },
+    description: p.summary,
+    alternates: { canonical: href(lang, path), languages: { en: path, bn: href("bn", path), ar: href("ar", path), "x-default": path } },
+    openGraph: { title: `${title} — ${d.name.full}`, description: p.summary, url: `${site.url}${href(lang, path)}`, type: "article" },
   };
 }
 
-export default async function WorkPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const p = getProject(slug);
+export default async function WorkPage({ params }: { params: Promise<{ lang: string; slug: string }> }) {
+  const { lang: raw, slug } = await params;
+  const lang = (isLang(raw) ? raw : "en") as Lang;
+  const d = t(lang);
+  const c = d.case;
+  const L = (x: string) => href(lang, x);
+  const arrow = lang === "ar" ? "←" : "→";
+  const p = projectFor(slug, lang);
   if (!p) notFound();
-  const i = projects.findIndex((x) => x.slug === p.slug);
-  const next = projects[(i + 1) % projects.length];
+  const all = projectsFor(lang);
+  const i = all.findIndex((x) => x.slug === p.slug);
+  const next = all[(i + 1) % all.length];
   const statusCls = p.status === "In preparation" ? "soon" : p.status === "Preview edition" ? "beta" : "live";
   const dark = ["t-history", "t-mystrick", "t-attar", "t-sundus"].includes(p.theme);
 
@@ -58,9 +69,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-          { "@type": "ListItem", position: 2, name: "Work", item: `${site.url}/#work` },
-          { "@type": "ListItem", position: 3, name: p.name, item: `${site.url}/work/${p.slug}` },
+          { "@type": "ListItem", position: 1, name: c.home, item: `${site.url}${L("/")}` },
+          { "@type": "ListItem", position: 2, name: c.work, item: `${site.url}${L("/#work")}` },
+          { "@type": "ListItem", position: 3, name: p.name, item: `${site.url}${L(`/work/${p.slug}`)}` },
         ],
       },
     ],
@@ -75,21 +86,26 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
         {p.slug === "sundus" && <div className="silk" aria-hidden />}
         <div className="wrap">
           <nav className="crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link> <span aria-hidden>/</span> <Link href="/#work">Work</Link> <span aria-hidden>/</span> <span aria-current="page">{p.name}</span>
+            <Link href={L("/")}>{c.home}</Link> <span aria-hidden>/</span> <Link href={L("/#work")}>{c.work}</Link> <span aria-hidden>/</span> <span aria-current="page">{p.name}</span>
           </nav>
           <div className="pmeta case__meta">
             <span className="pmeta__no">{p.no}</span>
             <span className="pmeta__cat">{p.category}</span>
-            <span className={`chip chip--${statusCls}`}>{p.status}</span>
+            <span className={`chip chip--${statusCls}`}>{d.status[p.status]}</span>
           </div>
           <div className="case__titlebar">
             <div>
               <h1 className="case__title">
                 <Split text={p.name} mode="chars" step={40} delay={250} />
               </h1>
-              {p.native && (
+              {lang === "en" && p.native && (
                 <p className="case__native" lang={p.slug === "sundus" ? "ar" : undefined}>
                   {p.native}
+                </p>
+              )}
+              {lang !== "en" && (
+                <p className="case__native" lang="en" dir="ltr">
+                  {projects[i].name}
                 </p>
               )}
             </div>
@@ -115,7 +131,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           <div className="pactions">
             {p.url && (
               <a className="btn btn--solid" href={p.url} target="_blank" rel="noopener noreferrer" data-magnetic="0.2">
-                Visit {p.urlLabel} <span aria-hidden>↗</span>
+                {c.visit} <span dir="ltr">{p.urlLabel}</span> <span aria-hidden>↗</span>
               </a>
             )}
             {p.links?.map((l) => (
@@ -135,7 +151,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
       <section className="case__body wrap" aria-label="Overview">
         <div className="case__story">
-          <p className="label">Overview</p>
+          <p className="label">{c.overview}</p>
           <p className="case__summary" data-reveal>
             {p.summary}
           </p>
@@ -157,7 +173,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             ))}
           </dl>
           <div className="case__role" data-reveal>
-            <p className="label">My role</p>
+            <p className="label">{c.role}</p>
             <ul>
               {p.role.map((r) => (
                 <li key={r}>{r}</li>
@@ -169,8 +185,8 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
       {p.screens && (
         <section className="case__screens wrap" aria-label="Website previews">
-          <p className="label">The website</p>
-          <div className="devices">
+          <p className="label">{c.website}</p>
+          <div className="devices" dir="ltr">
             <figure className={`browser${p.screens.mobile ? "" : " browser--solo"}`} data-clip data-tilt="4">
               <div className="browser__bar" aria-hidden>
                 <i />
@@ -186,16 +202,16 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
               </figure>
             )}
           </div>
-          <p className="case__caption">Screenshots of the live site, captured November 2026.</p>
+          <p className="case__caption">{c.caption}</p>
         </section>
       )}
 
       {p.gallery.length > 0 && (
         <section className="case__gallery wrap" aria-label="Gallery">
-          <p className="label">{p.slug === "attar-lagbe" ? "Product & brand imagery" : p.slug === "as-sakinah" ? "Knowledge posts" : "From the road"}</p>
+          <p className="label">{p.slug === "attar-lagbe" ? c.productImagery : p.slug === "as-sakinah" ? c.posts : c.road}</p>
           <div className={`gallery gallery--${p.gallery.length}${p.gallery[0]?.wide ? " gallery--wide" : ""}`}>
             {p.gallery.map((g, k) => (
-              <figure key={g.src} data-clip data-cursor="View" style={{ ["--d" as string]: `${k * 90}ms` }}>
+              <figure key={g.src} data-clip data-cursor={d.work.view} style={{ ["--d" as string]: `${k * 90}ms` }}>
                 <Image src={g.src} alt={g.alt} width={g.wide ? 1800 : 900} height={g.wide ? 1013 : g.tall ? 1200 : 900} sizes={g.wide ? "(max-width: 800px) 100vw, 50vw" : "(max-width: 800px) 50vw, 25vw"} />
               </figure>
             ))}
@@ -205,7 +221,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
       {p.products && (
         <section className="case__gallery wrap" aria-label="Product range">
-          <p className="label">The collection · 6 ml</p>
+          <p className="label">{c.collection}</p>
           <div className="products">
             {p.products.map((x, k) => (
               <figure key={x.src} data-reveal data-tilt="8" style={{ ["--d" as string]: `${k * 60}ms` }}>
@@ -220,17 +236,18 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       {p.slug === "sundus" && (
         <section className="case__soon wrap" aria-label="Status">
           <p data-reveal>
-            Sundus is being prepared. Its logo, collection and launch date will be shared here when they are ready. To ask about it in the meantime,{" "}
-            <Link href="/#contact">get in touch</Link>.
+            {c.soon} <Link href={L("/#contact")}>{c.soonLink}</Link>.
           </p>
         </section>
       )}
 
       <nav className="case__next" aria-label="Next project">
-        <Link href={`/work/${next.slug}`} className="wrap" data-cursor="Next">
-          <span className="label">Next project · {next.no}</span>
+        <Link href={L(`/work/${next.slug}`)} className="wrap" data-cursor={arrow}>
+          <span className="label">
+            {c.next} · {next.no}
+          </span>
           <span className="case__nextname">
-            {next.name} <span aria-hidden>→</span>
+            {next.name} <span aria-hidden>{arrow}</span>
           </span>
         </Link>
       </nav>

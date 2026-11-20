@@ -3632,3 +3632,356 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/* ==========================================================================
+   TYPE SYSTEM v3 — Space Grotesk + Inter (as in the Saiful Islam portfolio),
+   Hind Siliguri for Bengali, Cairo for Arabic, Amiri for Arabic calligraphy
+   ========================================================================== */
+:root {
+  --f-d: var(--f-display), "Helvetica Neue", Arial, sans-serif;
+  --f-s: var(--f-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-m: var(--f-display), system-ui, sans-serif;
+  --f-ar: var(--f-arabic), "Geeza Pro", sans-serif;
+  --f-bn: var(--f-bangla), "Kohinoor Bangla", sans-serif;
+  --f-cal: var(--f-calli), var(--f-arabic), serif;
+}
+html[data-lang="bn"] {
+  --f-d: var(--f-bangla), var(--f-display), sans-serif;
+  --f-s: var(--f-bangla), var(--f-sans), sans-serif;
+  --f-m: var(--f-bangla), var(--f-display), sans-serif;
+}
+html[data-lang="ar"] {
+  --f-d: var(--f-arabic), var(--f-display), sans-serif;
+  --f-s: var(--f-arabic), var(--f-sans), sans-serif;
+  --f-m: var(--f-arabic), var(--f-display), sans-serif;
+}
+body {
+  font-family: var(--f-s);
+}
+[lang="ar"] {
+  font-family: var(--f-ar);
+}
+[lang="bn"] {
+  font-family: var(--f-bn);
+}
+[lang="en"] {
+  font-family: var(--f-display), var(--f-sans), sans-serif;
+}
+
+/* headings: confident grotesk, no faux italics */
+h1, h2, h3,
+.section__title, .work__title, .about__statement, .contact__title, .case__title,
+.hero__name, .footer__headline, .footer__word, .menu__nav a, .menu__work a,
+.work__name, .case__nextname, .nf__title, .venture h3, .attar__title, .sakinah__title,
+.history__title, .mystrick__title, .case__summary, .footer__brand p, .about__aim blockquote p,
+.marquee, .case__tagline, .sakinah__tag, .skill__lead, .principles h3, .timeline h3, .interest h3,
+.langs__head h3, .skill h3, .loader__name, .nav__brand, .lang--en .lang__native {
+  font-family: var(--f-d);
+  font-style: normal;
+}
+em,
+.section__title em, .work__title em, .contact__title em, .footer__headline em, .history__title em, .nf__title em {
+  font-style: normal;
+}
+.hero__name {
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+}
+.hero__line--2 {
+  font-style: normal;
+  padding-left: 0.4em;
+}
+.section__title, .work__title, .contact__title, .footer__headline, .case__title, .nf__title {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.about__statement {
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+.work__name, .menu__nav a, .menu__work a, .case__nextname, .venture h3, .timeline h3, .interest h3, .skill h3, .principles h3 {
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+.attar__title, .sakinah__title, .history__title, .mystrick__title {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.case__summary, .case__tagline, .about__aim blockquote p, .footer__brand p {
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.about__aim blockquote p {
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+}
+.marquee {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.footer__word {
+  font-weight: 700;
+  letter-spacing: -0.06em;
+}
+.footer__word span:last-child {
+  font-style: normal;
+  background: var(--gold-grad);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 9s linear infinite;
+}
+.label {
+  font-weight: 500;
+}
+.loader__name {
+  font-weight: 600;
+  letter-spacing: 0.32em;
+}
+
+/* Arabic calligraphy accents keep their calligraphic face */
+.hero__ar[lang="ar"], .venture__ar, .sundus__ar, .case__bigar, .sakinah__bgword, .menu__bg, .footer__base [lang="ar"], .marquee [lang="ar"] {
+  font-family: var(--f-cal);
+}
+
+/* Bengali & Arabic: no tracking or capitals (they break joined letters), roomier lines */
+html[data-lang="bn"] *, html[data-lang="ar"] * {
+  letter-spacing: 0 !important;
+}
+html[data-lang="bn"] .label, html[data-lang="ar"] .label,
+html[data-lang="bn"] .pmeta, html[data-lang="ar"] .pmeta,
+html[data-lang="bn"] .chip, html[data-lang="ar"] .chip {
+  text-transform: none;
+  font-size: 0.82rem;
+}
+html[data-lang="bn"] .hero__name, html[data-lang="ar"] .hero__name {
+  line-height: 1.12;
+  font-size: clamp(3rem, 0.4rem + 8.4vw, 9.5rem);
+}
+html[data-lang="bn"] .section__title, html[data-lang="bn"] .work__title, html[data-lang="bn"] .about__statement,
+html[data-lang="bn"] .contact__title, html[data-lang="bn"] .footer__headline, html[data-lang="bn"] .case__title,
+html[data-lang="ar"] .section__title, html[data-lang="ar"] .work__title, html[data-lang="ar"] .about__statement,
+html[data-lang="ar"] .contact__title, html[data-lang="ar"] .footer__headline, html[data-lang="ar"] .case__title {
+  line-height: 1.25;
+}
+html[data-lang="bn"] .split__m, html[data-lang="ar"] .split__m {
+  padding: 0.12em 0.04em 0.24em;
+  margin: -0.12em -0.04em -0.24em;
+}
+html[data-lang="bn"] body, html[data-lang="ar"] body {
+  line-height: 1.75;
+}
+html[data-lang="bn"] .footer__word, html[data-lang="ar"] .footer__word {
+  font-size: clamp(2.6rem, 9.5vw, 12rem);
+  line-height: 1.1;
+}
+
+/* ---------- language switcher ---------- */
+.langsw {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(184, 135, 47, 0.35);
+  gap: 2px;
+}
+.langsw a {
+  min-width: 36px;
+  height: 32px;
+  padding: 0 9px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: background 0.3s, color 0.3s;
+}
+.langsw a[lang="en"] {
+  font-family: var(--f-display);
+}
+.langsw a:hover {
+  background: rgba(184, 135, 47, 0.14);
+}
+.langsw a.is-on {
+  background: var(--gold);
+  color: #111;
+}
+.menu__langs {
+  display: flex;
+  gap: 16px;
+}
+.menu__langs a.is-on {
+  color: var(--gold-soft);
+}
+@media (max-width: 640px) {
+  .langsw a {
+    min-width: 32px;
+    height: 30px;
+    padding: 0 7px;
+  }
+}
+
+/* ---------- right-to-left (Arabic) ---------- */
+[dir="rtl"] .flip,
+[dir="rtl"] .btn span[aria-hidden]:not(.no-flip) {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+[dir="rtl"] .btn:hover span[aria-hidden] {
+  transform: scaleX(-1) translateX(3px);
+}
+[dir="rtl"] .hero__line--2 {
+  padding-left: 0;
+  padding-right: 0.4em;
+}
+[dir="rtl"] .hero__seal {
+  left: auto;
+  right: -12%;
+}
+[dir="rtl"] .hero__kicker span + span::before {
+  margin-right: 0;
+  margin-left: 18px;
+}
+[dir="rtl"] .work__index a:hover,
+[dir="rtl"] .skill li:hover,
+[dir="rtl"] .menu__work a:hover,
+[dir="rtl"] .menu__work a.is-active {
+  padding-left: 0;
+  padding-right: 12px;
+}
+[dir="rtl"] .work__status {
+  text-align: left;
+}
+[dir="rtl"] .timeline {
+  border-left: 0;
+  border-right: 1px solid var(--line);
+}
+[dir="rtl"] .timeline li {
+  padding: 0 32px 52px 0;
+}
+[dir="rtl"] .timeline li::before {
+  left: auto;
+  right: -6px;
+}
+[dir="rtl"] .timeline::after {
+  left: auto;
+  right: -1px;
+}
+[dir="rtl"] .history__note {
+  border-left: 0;
+  padding-left: 0;
+  border-right: 1px solid rgba(227, 194, 143, 0.4);
+  padding-right: 22px;
+}
+[dir="rtl"] .about__text p:first-child::first-letter,
+[dir="rtl"] .dropcap::first-letter {
+  float: none;
+  font-size: inherit;
+  padding: 0;
+  color: inherit;
+}
+[dir="rtl"] .menu {
+  clip-path: circle(0% at 46px 46px);
+}
+[dir="rtl"] .is-open .menu {
+  clip-path: circle(150% at 46px 46px);
+}
+[dir="rtl"] .menu__bg {
+  inset: auto auto -12% -4%;
+}
+[dir="rtl"] .menu__socials {
+  margin-left: 0;
+  margin-right: auto;
+}
+[dir="rtl"] .nav__brand {
+  margin-right: 0;
+  margin-left: auto;
+}
+[dir="rtl"] .principles li {
+  padding: 28px 0 8px 24px;
+  border-right: 0;
+  border-left: 1px solid var(--line);
+}
+[dir="rtl"] .principles li + li {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+[dir="rtl"] .principles li:last-child {
+  border-left: 0;
+}
+[dir="rtl"] .skill + .skill {
+  padding-left: 0;
+  padding-right: 28px;
+  border-left: 0;
+  border-right: 1px solid var(--line);
+}
+[dir="rtl"] .skill {
+  padding: 30px 0 12px 28px;
+}
+[dir="rtl"] .attar__float {
+  right: auto;
+  left: -4%;
+}
+[dir="rtl"] .polaroid--a { left: auto; right: 0; }
+[dir="rtl"] .polaroid--b { right: auto; left: 0; }
+[dir="rtl"] .polaroid--c { left: auto; right: 18%; }
+[dir="rtl"] .polaroid figcaption { left: auto; right: 12px; }
+[dir="rtl"] .case__role li::before { content: "—"; }
+[dir="rtl"] .about__text p:first-child { text-indent: 0; }
+@media (max-width: 860px) {
+  [dir="rtl"] .hero__seal { right: -30%; }
+  [dir="rtl"] .skill, [dir="rtl"] .skill + .skill { padding: 28px 0 8px; border-right: 0; }
+  [dir="rtl"] .principles li, [dir="rtl"] .principles li + li { padding-right: 0; padding-left: 0; border-left: 0; }
+}
+
+/* keep the email address on one line in the footer */
+.footer ul a[dir="ltr"] {
+  overflow-wrap: normal;
+  white-space: nowrap;
+  font-size: 0.86rem;
+}
+
+/* Hide off-screen helpers without pushing them sideways (sideways offsets widen RTL pages). */
+html,
+body {
+  overflow-x: clip;
+}
+.form .hp {
+  position: absolute;
+  left: auto;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+  pointer-events: none;
+}
+.skip {
+  left: 8px;
+  inset-inline-start: 8px;
+  right: auto;
+  transform: translateY(-200%);
+}
+[dir="rtl"] .skip {
+  left: auto;
+  right: 8px;
+}
+.skip:focus {
+  transform: none;
+}
+.safar__route,
+.marquee,
+.shelf {
+  contain: paint;
+}
+
+.nav__name {
+  white-space: nowrap;
+}
+@media (max-width: 460px) {
+  .nav__name {
+    display: none;
+  }
+}
