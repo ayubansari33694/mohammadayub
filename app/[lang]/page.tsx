@@ -8,7 +8,6 @@ import Loader from "@/components/Loader";
 import RoleCycler from "@/components/RoleCycler";
 import ContactForm from "@/components/ContactForm";
 import Split from "@/components/Split";
-import PortraitDeck from "@/components/PortraitDeck";
 
 const thumbs: Record<string, string> = {
   "safar-nama": "/work/safar-nama/ayub-forest.jpg",
@@ -81,8 +80,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
 
           <div className="hero__portrait">
-            <div className="hero__arch hero__arch--deck" data-tilt="10">
-              <PortraitDeck alt={d.hero.portraitAlt} />
+            <div className="hero__arch" data-tilt="10">
+              <span className="hero__sheen" aria-hidden />
+              <Image src="/brand/ayub-portrait.jpg" alt={d.hero.portraitAlt} width={460} height={572} priority sizes="(max-width: 800px) 70vw, 30vw" />
             </div>
             <div className="hero__seal" aria-hidden>
               <svg viewBox="0 0 200 200">
@@ -110,27 +110,31 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      {/* project logos only, evenly spaced (AYUB, 2026-11-20: no black word band, no names) */}
-      <nav className="logos" aria-label={d.nav.projects} data-reveal>
-        <ul className="logos__row wrap">
-          {projects.map((p, i) => (
-            <li key={p.slug} style={{ ["--i" as string]: i }}>
-              <Link href={L(`/work/${p.slug}`)} className="logos__item" aria-label={p.name} title={p.name}>
-                {ribbonLogos[p.slug] ? (
-                  <span
-                    className="logos__mark"
-                    style={{ ["--logo" as string]: `url(${ribbonLogos[p.slug].src})`, ["--ar" as string]: ribbonLogos[p.slug].ratio, ["--sc" as string]: ribbonLogos[p.slug].scale ?? 1 }}
-                    aria-hidden
-                  />
-                ) : (
-                  <span className="logos__mark logos__mark--text" lang="ar" aria-hidden>
-                    سندس
-                  </span>
-                )}
-              </Link>
-            </li>
+      {/* project logos only, moving right to left; stops under the pointer, each opens its project (AYUB, 2026-11-20) */}
+      <nav className="logos" aria-label={d.nav.projects}>
+        <div className="logos__track" dir="ltr">
+          {[0, 1].map((k) => (
+            <ul key={k} className="logos__set" aria-hidden={k === 1 || undefined}>
+              {projects.map((p, i) => (
+                <li key={p.slug} style={{ ["--i" as string]: i }}>
+                  <Link href={L(`/work/${p.slug}`)} className="logos__item" aria-label={p.name} title={p.name} tabIndex={k === 1 ? -1 : undefined}>
+                    {ribbonLogos[p.slug] ? (
+                      <span
+                        className="logos__mark"
+                        style={{ ["--logo" as string]: `url(${ribbonLogos[p.slug].src})`, ["--ar" as string]: ribbonLogos[p.slug].ratio, ["--sc" as string]: ribbonLogos[p.slug].scale ?? 1 }}
+                        aria-hidden
+                      />
+                    ) : (
+                      <span className="logos__mark logos__mark--text" lang="ar" aria-hidden>
+                        سندس
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           ))}
-        </ul>
+        </div>
       </nav>
 
       {/* ─────────────── ABOUT ─────────────── */}
