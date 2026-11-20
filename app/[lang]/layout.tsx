@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     },
     twitter: { card: "summary_large_image", title: d.meta.title, description: d.meta.description },
     robots: { index: true, follow: true },
+    appleWebApp: { capable: true, title: "Ayub", statusBarStyle: "default" },
   };
 }
 

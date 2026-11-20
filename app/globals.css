@@ -2622,7 +2622,7 @@ a:hover .roll::after {
 }
 .scrolled .nav__bar,
 .is-open .nav__bar {
-  background: rgba(243, 238, 228, 0.72);
+  background: rgba(243, 238, 228, 0.88);
   border-color: rgba(184, 135, 47, 0.28);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
@@ -2758,19 +2758,34 @@ a:hover .roll::after {
 .is-open .nav__mark {
   background: transparent;
 }
-body:has(.case.is-dark) .nav:not(.is-open) .nav__bar {
+/* Dark surface under the header (dark sections, footer, dark case pages).
+   Experience.tsx reads the background behind the bar and toggles html.nav-dark. */
+.nav__bar,
+.nav__time,
+.nav__cta {
+  transition: background 0.45s, border-color 0.45s, box-shadow 0.45s, color 0.45s, backdrop-filter 0.45s;
+}
+.nav-dark .nav:not(.is-open) .nav__bar {
   color: var(--paper);
 }
-body:has(.case.is-dark) .scrolled .nav__bar {
-  background: rgba(15, 21, 19, 0.55);
-  border-color: rgba(233, 199, 123, 0.2);
+.nav-dark.scrolled .nav:not(.is-open) .nav__bar {
+  background: rgba(15, 21, 19, 0.82);
+  border-color: rgba(233, 199, 123, 0.28);
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.8);
 }
-body:has(.case.is-dark) .nav__time {
-  color: rgba(243, 238, 228, 0.6);
+.nav-dark .nav:not(.is-open) .nav__time {
+  color: rgba(243, 238, 228, 0.66);
 }
-body:has(.case.is-dark) .nav__cta {
+.nav-dark .nav:not(.is-open) .nav__cta {
   background: var(--paper);
   color: var(--ink);
+}
+.nav-dark .nav:not(.is-open) .nav__toggle,
+.nav-dark .nav:not(.is-open) .langsw {
+  border-color: rgba(233, 199, 123, 0.4);
+}
+.nav-dark .nav:not(.is-open) .langsw a:not(.is-on):hover {
+  background: rgba(233, 199, 123, 0.16);
 }
 @media (max-width: 1100px) {
   .nav__links {
@@ -2795,6 +2810,7 @@ body:has(.case.is-dark) .nav__cta {
   pointer-events: none;
   background: var(--ink-2);
   color: var(--paper);
+  overflow-x: hidden; /* the big decorative name must not make the menu scroll sideways on phones */
   clip-path: circle(0% at calc(100% - 46px) 46px);
   transition: clip-path 0.9s var(--ease-out);
   overflow: hidden;
@@ -2914,6 +2930,35 @@ body:has(.case.is-dark) .nav__cta {
   display: flex;
   gap: 18px;
   margin-left: auto;
+}
+.install {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.install__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(233, 199, 123, 0.45);
+  background: rgba(233, 199, 123, 0.1);
+  color: var(--gold-soft);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.install__btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.install__hint {
+  font-size: 0.82rem;
+  color: rgba(243, 238, 228, 0.75);
 }
 .menu__foot a:hover {
   color: var(--gold-soft);

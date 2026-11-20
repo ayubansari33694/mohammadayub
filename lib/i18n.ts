@@ -25,6 +25,7 @@ export type Dict = {
   name: { first: string; last: string; full: string };
   roles: string[];
   nav: { about: string; work: string; ventures: string; education: string; contact: string; home: string; talk: string; time: string; menu: string; close: string; navigate: string; projects: string };
+  app: { install: string; iosHint: string };
   hero: { kicker: [string, string]; intro: string; explore: string; touch: string; caption: string; scroll: string; seal: string; portraitAlt: string; secondary: string };
   marquee: string[];
   about: { label: string; statement: string; p: string[]; aimLabel: string; aim: string; principles: [string, string][] };
@@ -89,6 +90,7 @@ const en: Dict = {
   name: { first: "Mohammad", last: "Ayub", full: "Mohammad Ayub" },
   roles: ["Student", "Creative Designer", "Entrepreneur", "Digital Creator", "Research Enthusiast"],
   nav: { about: "About", work: "Work", ventures: "Ventures", education: "Education", contact: "Contact", home: "Home", talk: "Let’s talk", time: "Dhaka", menu: "Open menu", close: "Close menu", navigate: "Navigate", projects: "Projects" },
+  app: { install: "Install the app", iosHint: "On iPhone or iPad: tap Share, then “Add to Home Screen”." },
   hero: {
     kicker: ["Personal portfolio", "Bangladesh"],
     intro: "I study the Hadith and the Islamic sciences, and I build things: brands, digital platforms, films and ventures. This is where all of them meet.",
@@ -267,6 +269,7 @@ const bn: Dict = {
   name: { first: "মোহাম্মদ", last: "আইয়ুব", full: "মোহাম্মদ আইয়ুব" },
   roles: ["শিক্ষার্থী", "ক্রিয়েটিভ ডিজাইনার", "উদ্যোক্তা", "ডিজিটাল ক্রিয়েটর", "গবেষণা-অনুরাগী"],
   nav: { about: "পরিচিতি", work: "কাজ", ventures: "উদ্যোগ", education: "শিক্ষা", contact: "যোগাযোগ", home: "হোম", talk: "কথা বলুন", time: "ঢাকা", menu: "মেনু খুলুন", close: "মেনু বন্ধ করুন", navigate: "নেভিগেশন", projects: "প্রজেক্টসমূহ" },
+  app: { install: "অ্যাপ হিসেবে ইনস্টল করুন", iosHint: "আইফোন বা আইপ্যাডে: Share বাটনে চাপ দিন, তারপর “Add to Home Screen” বেছে নিন।" },
   hero: {
     kicker: ["ব্যক্তিগত পোর্টফোলিও", "বাংলাদেশ"],
     intro: "আমি হাদিস ও ইসলামি জ্ঞান অধ্যয়ন করি, আর তৈরি করি নানা কিছু: ব্র্যান্ড, ডিজিটাল প্ল্যাটফর্ম, ভিডিও আর উদ্যোগ। সবকিছু এক জায়গায় এখানে।",
@@ -445,6 +448,7 @@ const ar: Dict = {
   name: { first: "محمد", last: "أيوب", full: "محمد أيوب" },
   roles: ["طالب علم", "مصمم مبدع", "رائد أعمال", "صانع محتوى رقمي", "شغوف بالبحث"],
   nav: { about: "نبذة", work: "الأعمال", ventures: "المشاريع التجارية", education: "التعليم", contact: "تواصل", home: "الرئيسية", talk: "لنتحدث", time: "دكا", menu: "فتح القائمة", close: "إغلاق القائمة", navigate: "التنقل", projects: "المشاريع" },
+  app: { install: "ثبّت التطبيق", iosHint: "على الآيفون أو الآيباد: اضغط زر المشاركة، ثم «إضافة إلى الشاشة الرئيسية»." },
   hero: {
     kicker: ["الموقع الشخصي", "بنغلاديش"],
     intro: "أدرس الحديث النبوي والعلوم الإسلامية، وأصنع أشياء: هويات تجارية، ومنصات رقمية، وأفلامًا، ومشاريع. وهنا تلتقي جميعها.",

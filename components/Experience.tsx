@@ -14,6 +14,32 @@ import Lenis from "lenis";
  * - Number counters
  * Everything degrades to static, readable content with reduced motion.
  */
+/**
+ * Is the surface behind the header dark? Looks at the page under the middle of the bar,
+ * skipping the header and overlays, and reads the first solid background colour.
+ */
+function isDarkBehindNav() {
+  const bar = document.querySelector<HTMLElement>(".nav__bar");
+  if (!bar) return false;
+  const r = bar.getBoundingClientRect();
+  const y = Math.max(1, r.top + r.height / 2);
+  const darkAt = (x: number) => {
+    const el = document
+      .elementsFromPoint(x, y)
+      .find((e) => !e.closest(".nav, .cursor, .curtain, .loader, .progress, .hover-preview"));
+    for (let n: Element | null = el ?? null; n && n !== document.documentElement; n = n.parentElement) {
+      const m = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
+      if (m && (m[3] === undefined || +m[3] >= 0.5)) {
+        const [r1, g, b] = m.slice(0, 3).map(Number);
+        return 0.2126 * r1 + 0.7152 * g + 0.0722 * b < 110;
+      }
+    }
+    return false;
+  };
+  // sample left, middle and right of the bar; dark wins when most samples are dark
+  return [0.2, 0.5, 0.8].filter((f) => darkAt(r.left + r.width * f)).length >= 2;
+}
+
 export default function Experience() {
   const pathname = usePathname();
   const router = useRouter();
@@ -115,7 +141,8 @@ export default function Experience() {
     /* the frame loop */
     let lastY = scrollY,
       vel = 0,
-      raf = 0;
+      raf = 0,
+      frame = 5;
     const loop = (time: number) => {
       lenis?.raf(time);
       const y = scrollY;
@@ -128,6 +155,8 @@ export default function Experience() {
       // header hide/show
       if (Math.abs(y - lastY) > 2) root.classList.toggle("nav-hidden", y > lastY && y > 400 && !root.classList.contains("menu-open"));
       root.classList.toggle("scrolled", y > 30);
+      // header contrast: check what is behind the bar every few frames
+      if (++frame % 6 === 0) root.classList.toggle("nav-dark", isDarkBehindNav());
       lastY = y;
 
       if (!reduce) {
